@@ -32,6 +32,14 @@ public class MainGameManager : MightyGameManager
     {
         foreach (GameObject player in npcSpawning.PlayerList)
         {
+            controllerNumber = npcSpawning.PlayerList.IndexOf(player)+1; // 1 offset as gamepads start from 1 not zero
+            if (useMouseAndKeyboardInput)
+            {
+                Vector3 movementDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * movementSpeed;
+                DebugExtension.DebugArrow(player.transform.position, movementDirection);
+                float yVel = 0.0f;//rb.velocity.y;
+                player.GetComponent<Rigidbody>().velocity = new Vector3(movementDirection.x, yVel, movementDirection.z);
+            }
              if (useGamePadInput)
             {
                     Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
