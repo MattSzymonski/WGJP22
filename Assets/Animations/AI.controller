@@ -64,9 +64,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 1
   targetDistance: 1
-  turningSpeed: 1
+  rotationSpeed: 1
   positionDampTime: 0.12
   targetDestination: {x: 0, y: 0, z: 0}
+  targetRotation: {x: 0, y: 0, z: 0, w: 0}
   npc: {fileID: 0}
 --- !u!1102 &-2727406383794035228
 AnimatorState:
