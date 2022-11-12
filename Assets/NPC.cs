@@ -18,7 +18,7 @@ public class NPC : MonoBehaviour
     {
         if (isPosessed)
         {
-            animator.SetBool(0, true);  // isIDLE
+            animator.SetBool("isIDLE", true);  // isIDLE
         }
         
     }

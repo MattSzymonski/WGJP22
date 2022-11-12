@@ -16,6 +16,12 @@ public class MainGameManager : MightyGameManager
     [ShowIf("useGamePadInput")] public int controllerNumber;
     public float movementSpeed = 5.0f;
 
+    // Players Selecting
+    [Header("Players")]
+    public int playerCount = 2;
+    public List<GameObject> playerList = new List<GameObject>();
+    public List<GameObject> playerShootSelectionList = new List<GameObject>();
+
     void Start()
     {
         brain = MightyGameBrain.Instance;
@@ -30,22 +36,44 @@ public class MainGameManager : MightyGameManager
 
     void HandlePlayers()
     {
-        foreach (GameObject player in npcSpawning.PlayerList)
+        HandlePlayerMovement();
+        HandleShootSelection();
+    }
+
+    void HandlePlayerMovement()
+    {
+        foreach (GameObject player in playerList)
         {
-            controllerNumber = npcSpawning.PlayerList.IndexOf(player)+1; // 1 offset as gamepads start from 1 not zero
+            DebugExtension.DebugWireSphere(player.transform.position, Color.red, 2f);
+            controllerNumber = playerList.IndexOf(player)+1; // 1 offset as gamepads start from 1 not zero
             if (useMouseAndKeyboardInput)
             {
                 Vector3 movementDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * movementSpeed;
-                DebugExtension.DebugArrow(player.transform.position, movementDirection);
+                DebugExtension.DebugArrow(player.transform.position, movementDirection, Color.green);
                 float yVel = 0.0f;//rb.velocity.y;
                 player.GetComponent<Rigidbody>().velocity = new Vector3(movementDirection.x, yVel, movementDirection.z);
             }
              if (useGamePadInput)
             {
                     Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
-                    DebugExtension.DebugArrow(player.transform.position, movementDirection);
+                    DebugExtension.DebugArrow(player.transform.position, movementDirection, Color.green);
                     float yVel = 0.0f;//player.GetComponent<Rigidbody>().velocity.y;
                     player.GetComponent<Rigidbody>().velocity = new Vector3(movementDirection.x, yVel, movementDirection.z);
+            }
+        }
+
+    }
+
+    void HandleShootSelection() {
+        foreach (GameObject player in playerList)
+        {
+            controllerNumber = playerList.IndexOf(player)+1; // 1 offset as gamepads start from 1 not zero
+            if (useMouseAndKeyboardInput)
+            {
+                Debug.LogError("Mouse and keyboard input not implemented yet!");
+            }
+            if (useGamePadInput)
+            {
             }
         }
     }
