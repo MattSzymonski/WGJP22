@@ -26,7 +26,7 @@ public class MainGameManager : MightyGameManager
     [ReadOnly] public List<bool> cursorMovedList = new List<bool>();
     [ReadOnly] public List<bool> cursorStartedMovingList = new List<bool>();
     private List<MightyTimer> cursorDelayTimerList = new List<MightyTimer>();
-    private List<MightyTimer> triggerTimerList = new List<MightyTimer>();
+    //private List<MightyTimer> triggerTimerList = new List<MightyTimer>();
     private ScoringManager scoringManager;
 
     void Start()
@@ -41,7 +41,7 @@ public class MainGameManager : MightyGameManager
         for (int i = 0; i < playerCount; i++)
         {
             cursorDelayTimerList.Add(Utils.InitializeTimer("CursorDelayTimer" + i, 0.05f, 0.05f));
-            triggerTimerList.Add(Utils.InitializeTimer("TriggerTimerList" + i, 0.2f, 0.2f));
+            //triggerTimerList.Add(Utils.InitializeTimer("TriggerTimerList" + i, 0.2f, 0.2f));
         }
     }
 
@@ -124,7 +124,7 @@ public class MainGameManager : MightyGameManager
 
                 float cursorMagnitude = cursorDirection.magnitude;
                 //Debug.Log(cursorDirection);
-                DebugExtension.DebugArrow(playerList[0].transform.position, cursorDirection * 100, colors[sel_id]);
+                DebugExtension.DebugArrow(playerShootSelectionList[sel_id].transform.position, cursorDirection * 10, colors[sel_id]);
 
                 if (cursorMagnitude > 0.01f)
                 {
