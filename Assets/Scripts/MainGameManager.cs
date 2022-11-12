@@ -26,6 +26,7 @@ public class MainGameManager : MightyGameManager
     [ReadOnly] public bool cursorMoved;
     [ReadOnly] public bool cursorStartedMoving;
     private MightyTimer cursorDelayTimer;
+
     void Start()
     {
         brain = MightyGameBrain.Instance;
@@ -90,7 +91,9 @@ public class MainGameManager : MightyGameManager
             }
             if (useGamePadInput)
             {
-                Vector3 cursorDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Right Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Right Stick Vertical"));
+                Vector3 cursorDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Right Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Right Stick Vertical")).normalized;
+                //Vector3 cursorDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")).normalized;
+
                 float cursorMagnitude = cursorDirection.magnitude;
                 //Debug.Log(cursorDirection);
                 DebugExtension.DebugArrow(playerList[0].transform.position, cursorDirection * 100, colors[sel_id]);
@@ -98,13 +101,15 @@ public class MainGameManager : MightyGameManager
                 if (cursorMagnitude > 0.01f)
                 {
                     // Project long box in direction of cursor
-                    Collider[] closestNPCs = Physics.OverlapBox(playerShootSelectionList[sel_id].transform.position + new Vector3(0, 0, 25), new Vector3(5, 0, 50), Quaternion.LookRotation(cursorDirection), LayerMask.GetMask("NPC"));
+                    Collider[] closestNPCs = Physics.OverlapBox(playerShootSelectionList[sel_id].transform.position + cursorDirection * 25f, new Vector3(2.5f, 0, 25f), Quaternion.LookRotation(cursorDirection), LayerMask.GetMask("NPC"));
+                    DebugExtension.DebugWireSphere(playerShootSelectionList[sel_id].transform.position + cursorDirection*25f, colors[sel_id], 5f);
                     GameObject closestSelection = playerShootSelectionList[sel_id];
                     float closestDistance = -1f;
                     foreach (Collider npc in closestNPCs)
                     {
-                        if (gameObject != npc.gameObject) // Do not select itself when collided
+                        if (playerShootSelectionList[sel_id].gameObject != npc.gameObject) // Do not select itself when collided
                         {
+                            DebugExtension.DebugWireSphere(npc.transform.position, Color.yellow, 2f);
                             float distance = Vector3.Distance(playerShootSelectionList[sel_id].transform.position, npc.transform.position);
                             if (closestDistance == -1f || distance < closestDistance)
                             {
