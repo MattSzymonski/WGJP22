@@ -65,7 +65,10 @@ MonoBehaviour:
   movementSpeed: 1
   targetDistance: 1
   rotationSpeed: 1
+  raycastDistance: 5
   positionDampTime: 0.12
+  directionChangeTimeMin: 1
+  directionChangeTimeMax: 3
   targetDestination: {x: 0, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
   npc: {fileID: 0}

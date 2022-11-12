@@ -11,10 +11,11 @@ public class StrollingBehaviour : StateMachineBehaviour
 
     public float positionDampTime = 0.12f;
 
-    private int frameNr = 0;
     private int nextDirectionChangeDelta = 0;
     public int directionChangeTimeMin = 1;
     public int directionChangeTimeMax = 10;
+
+    private Mighty.MightyTimer directionChangeTimer;
 
     public Vector3 targetDestination;
     public Quaternion targetRotation;
@@ -31,6 +32,7 @@ public class StrollingBehaviour : StateMachineBehaviour
         rb = animator.GetComponent<Rigidbody>();
         targetDestination = animator.transform.position;
         nextDirectionChangeDelta = Random.Range(directionChangeTimeMin, directionChangeTimeMax);
+        ResetTimer();
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -70,19 +72,22 @@ public class StrollingBehaviour : StateMachineBehaviour
         // new approach
         // find a new target angle several frames and smooth interpolate between them (OPTIONAL)
         float rand;
-        frameNr += 1;
-        if (frameNr > 10)
+
+        if (directionChangeTimer.finished)
         {
-            frameNr = 0;
+            Mighty.MightyTimersManager.Instance.RemoveTimer(directionChangeTimer);
+            ResetTimer();
+
             rand = Random.Range(0, 360);
             targetRotation = Quaternion.Euler(animator.transform.rotation.x, rand, animator.transform.rotation.z);
         }
-        else if (npc.Colliding())
+        else if (npc.Colliding()) // TODO: should we reset the timer on collisions?
         {
             // if just collided, find new position (very small deflection so that it looks like they are avoiding collisions?)
         } 
         else if (WallNear(animator))
         {
+            Debug.Log("Wall Near!");
             // if near a wall or other obstacle, calculate new reflection direction 
             // raycast some distance ahead and do a sharp turn
         }
@@ -116,7 +121,13 @@ public class StrollingBehaviour : StateMachineBehaviour
 
     private bool WallNear(Animator animator)
     {
-        Debug.Log("Wall Near!");
         return Physics.Raycast(animator.transform.position, animator.transform.forward, raycastDistance);
+    }
+
+    private void ResetTimer()
+    {
+        directionChangeTimer = Mighty.MightyTimersManager.Instance.CreateTimer("DirectionChangeTimer", nextDirectionChangeDelta, 1f, false, true); // Create new timer (Not looping, stopped on start)
+        directionChangeTimer.RestartTimer();
+        directionChangeTimer.PlayTimer();
     }
 }

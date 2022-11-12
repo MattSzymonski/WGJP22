@@ -89,7 +89,14 @@ namespace Mighty
 
     public class MightyTimersManager : MonoBehaviour
     {
+        private static MightyTimersManager instance;
+        public static MightyTimersManager Instance { get { return instance; } }
+
         public List<MightyTimer> timers;
+        private void Awake()
+        {
+            instance = this; 
+        }
 
         private void Update()
         {
