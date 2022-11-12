@@ -21,6 +21,7 @@ public class MainGameManager : MightyGameManager
     public int playerCount = 2;
     public List<GameObject> playerList = new List<GameObject>();
     public List<GameObject> playerShootSelectionList = new List<GameObject>();
+    Color[] colors = { Color.red, Color.blue, Color.green };
     [ReadOnly] public float cursorMagnitude;
     [ReadOnly] public bool cursorMoved;
     [ReadOnly] public bool cursorStartedMoving;
@@ -53,7 +54,7 @@ public class MainGameManager : MightyGameManager
     {
         foreach (GameObject player in playerList)
         {
-            DebugExtension.DebugWireSphere(player.transform.position, Color.red, 2f);
+            DebugExtension.DebugWireSphere(player.transform.position, colors[playerList.IndexOf(player)], 2f);
             controllerNumber = playerList.IndexOf(player)+1; // 1 offset as gamepads start from 1 not zero
             if (useMouseAndKeyboardInput)
             {
@@ -65,7 +66,7 @@ public class MainGameManager : MightyGameManager
              if (useGamePadInput)
             {
                 Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
-                DebugExtension.DebugArrow(player.transform.position, movementDirection, Color.green);
+                DebugExtension.DebugArrow(player.transform.position, movementDirection * 10, Color.green);
 
                 Rigidbody rb = player.GetComponent<Rigidbody>();
                 float yVel = rb.velocity.y;
@@ -80,7 +81,7 @@ public class MainGameManager : MightyGameManager
         List<GameObject> newSelected = new List<GameObject>();
         for (int sel_id = 0; sel_id < playerShootSelectionList.Count; ++sel_id)
         {
-            DebugExtension.DebugWireSphere(playerShootSelectionList[sel_id].transform.position, Color.blue, 2f);
+            DebugExtension.DebugPoint(playerShootSelectionList[sel_id].transform.position, colors[sel_id], 10f);
 
             controllerNumber = sel_id+1; // 1 offset as gamepads start from 1 not zero
             if (useMouseAndKeyboardInput)
@@ -91,8 +92,8 @@ public class MainGameManager : MightyGameManager
             {
                 Vector3 cursorDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Right Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Right Stick Vertical"));
                 float cursorMagnitude = cursorDirection.magnitude;
-                Debug.Log(cursorDirection);
-                DebugExtension.DebugArrow(playerShootSelectionList[sel_id].transform.position, cursorDirection, Color.red);
+                //Debug.Log(cursorDirection);
+                DebugExtension.DebugArrow(playerList[0].transform.position, cursorDirection * 100, colors[sel_id]);
 
                 if (cursorMagnitude > 0.01f)
                 {

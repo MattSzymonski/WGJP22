@@ -10,7 +10,9 @@ public class NPC : MonoBehaviour
     public int minStateChangeTime = 200;
     public int maxStateChangeTime = 600;
 
-    private Mighty.MightyTimer directionChangeTimer;
+    //public int 
+
+    private Mighty.MightyTimer stateChangeTimer;
 
     private bool collided = false;
     private Animator animator;
@@ -18,7 +20,7 @@ public class NPC : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        //Utils.ResetTimer();
+        Utils.ResetTimer(out stateChangeTimer, minStateChangeTime, maxStateChangeTime);
     }
 
     // Update is called once per frame
@@ -27,8 +29,14 @@ public class NPC : MonoBehaviour
         if (isPosessed)
         {
             animator.SetBool("isIDLE", true);  // isIDLE
+            return;
         }
         // overarching state machine - changes state every N seconds
+        if (stateChangeTimer.finished)
+        {
+            // assign probabilities?
+
+        }
         
     }
 
