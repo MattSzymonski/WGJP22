@@ -14,4 +14,12 @@ public class Utils
         timer.RestartTimer();
         timer.PlayTimer();
     }
+    public static Mighty.MightyTimer InitializeTimer(string name, float timeMin, float timeMax)
+    {
+        float stopDelta = Random.Range(timeMin, timeMax);
+        Mighty.MightyTimer timer = Mighty.MightyTimersManager.Instance.CreateTimer(name, stopDelta, 1f, false, true); // Create new timer (Not looping, stopped on start)
+        timer.RestartTimer();
+        timer.PlayTimer();
+        return timer;
+    }
 }

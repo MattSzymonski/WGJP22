@@ -26,6 +26,7 @@ public class MainGameManager : MightyGameManager
     [ReadOnly] public List<bool> cursorMovedList = new List<bool>();
     [ReadOnly] public List<bool> cursorStartedMovingList = new List<bool>();
     private List<MightyTimer> cursorDelayTimerList = new List<MightyTimer>();
+    private List<MightyTimer> triggerTimerList = new List<MightyTimer>();
 
     void Start()
     {
@@ -38,7 +39,8 @@ public class MainGameManager : MightyGameManager
         cursorStartedMovingList = Enumerable.Repeat(false, playerCount).ToList();
         for (int i = 0; i < playerCount; i++)
         {
-            cursorDelayTimerList.Add(timeManager.CreateTimer("CursorDelayTimer" + i, 0.005f, 2.0f, false, true));
+            cursorDelayTimerList.Add(Utils.InitializeTimer("CursorDelayTimer" + i, 0.05f, 0.05f));
+            triggerTimerList.Add(Utils.InitializeTimer("TriggerTimerList" + i, 0.2f, 0.2f));
         }
     }
 
@@ -177,10 +179,10 @@ public class MainGameManager : MightyGameManager
         for (int i = 0; i < playerList.Count; ++i)
         {
             int controllerNr = i + 1;
-            //if (Input.GetAxis("Controller" + i + " Triggers") != 0)
-            if (Input.GetButtonDown("Controller" + controllerNr + " X"))
+            //if (Input.GetAxis("Controller" + controllerNr + " Triggers") != 0 && triggerTimerList[i].finished) // TODO: TRIGGERS NOT WORKING
+            if (Input.GetButtonDown("Controller" + controllerNr + " X")) // InputManager "Positive Button" must be "joystick <nr> button <button nr>"
             {
-                Debug.Log("Poof");
+                Debug.Log("Controller " + controllerNr + " Poof");
                 if (!playerShootSelectionList[i])
                 {
                     Debug.Log("Missing selection"); // TODO: corner case? ignore?
