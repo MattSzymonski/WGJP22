@@ -37,47 +37,16 @@ public class StrollingBehaviour : StateMachineBehaviour
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {/*
-        // find a random direction each few frames
-        frameNr += 1;
-        if (frameNr > 10) 
-        {
-            frameNr = 0;
-            // draw a vector in a random direction of particular length
-            // draw a vector of targetDistance forward, rotate it random angle and add to animator.transform.position
-            // lerp also the quaternion
-            float rand = Random.Range(0, 360);
-            targetRotation = Quaternion.Euler(animator.transform.rotation.x, rand, animator.transform.rotation.z);
-            Vector3 followVector = Quaternion.AngleAxis(rand, Vector3.up) * Vector3.forward * targetDistance;
-            // or just fan in the angle -45,45 and adjust rotation every frame
-
-            //tmpDest = new Vector3(Random.Range(-maxDistance, maxDistance), animator.transform.position.y, Random.Range(-maxDistance, maxDistance));
-            targetDestination = new Vector3(animator.transform.position.x + followVector.x, animator.transform.position.y, animator.transform.position.z + followVector.z);
-        }
-        else if (npc.Colliding())// won't it trigger many times?
-        {
-            // calculate the reflection vector
-    
-        }
-        // continue moving to the random direction along some path
-        // if near a wall or other obstacle, calculate new reflection direction 
-        // raycast some distance ahead and do a sharp turn
-
-        //animator.transform.position = Vector3.Lerp(animator.transform.position, targetDestination, Time.deltaTime * movementSpeed * 0.1f); // TODO: this looks very weird :D (brownian motion)
-        Vector3 smoothedPosition = Vector3.SmoothDamp(animator.transform.position, targetDestination, ref positionVelocity, positionDampTime);
-        animator.transform.position = smoothedPosition;
-        animator.transform.rotation = Quaternion.Slerp(animator.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-        */
-
+    {
         // new approach
-        // find a new target angle several frames and smooth interpolate between them (OPTIONAL)
+        // find a new target angle several frames and smooth interpolate between them (OPTIONAL) TODO:
         float rand;
+        RaycastHit outRayHit;
 
         if (directionChangeTimer.finished)
         {
             Mighty.MightyTimersManager.Instance.RemoveTimer(directionChangeTimer);
             ResetTimer();
-
             rand = Random.Range(0, 360);
             targetRotation = Quaternion.Euler(animator.transform.rotation.x, rand, animator.transform.rotation.z);
         }
@@ -85,10 +54,19 @@ public class StrollingBehaviour : StateMachineBehaviour
         {
             // if just collided, find new position (very small deflection so that it looks like they are avoiding collisions?)
         } 
-        else if (WallNear(animator))
+        else if (WallNear(animator, out outRayHit))
         {
             Debug.Log("Wall Near!");
             // if near a wall or other obstacle, calculate new reflection direction 
+            //float angle = animator.transform.rotation.eulerAngles.y;
+            Vector3 reflectVec = Vector3.Reflect(animator.transform.forward, outRayHit.normal);
+            // rotate the vector in a -30,30 degree fan
+            float rotAngle = Random.Range(-30f, 30f);
+            Vector3 rotated = Quaternion.AngleAxis(rotAngle, Vector3.up) * reflectVec;
+
+            float angle = Vector3.Angle(Vector3.forward, rotated);
+
+            targetRotation = Quaternion.AngleAxis(angle, Vector3.up);
             // raycast some distance ahead and do a sharp turn
         }
 
@@ -119,9 +97,9 @@ public class StrollingBehaviour : StateMachineBehaviour
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
 
-    private bool WallNear(Animator animator)
+    private bool WallNear(Animator animator, out RaycastHit outRayHit)
     {
-        return Physics.Raycast(animator.transform.position, animator.transform.forward, raycastDistance);
+        return Physics.Raycast(animator.transform.position, animator.transform.forward, out outRayHit, raycastDistance);
     }
 
     private void ResetTimer()
