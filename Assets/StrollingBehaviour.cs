@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class StrollingBehaviour : StateMachineBehaviour
 {
-    public float movementSpeed = 10f;
-    public float maxDistance = 10f;
+    public float movementSpeed = 0.01f;
+    public float targetDistance = 1f;
     public float turningSpeed = 1f;
 
+    public float positionDampTime = 0.12f;
+
     private int frameNr = 0;
-    public Vector3 targetDirection;
+    public Vector3 targetDestination;
+    private Vector3 positionVelocity = Vector3.zero;
 
     public NPC npc;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
@@ -17,6 +20,7 @@ public class StrollingBehaviour : StateMachineBehaviour
     {
         Debug.Log("Entered Strolling!");
         npc = animator.GetComponent<NPC>();
+        targetDestination = animator.transform.position;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -24,10 +28,17 @@ public class StrollingBehaviour : StateMachineBehaviour
     {
         // find a random direction each few frames
         frameNr += 1;
-        if (frameNr > 19) 
+        if (frameNr > 10) 
         {
             frameNr = 0;
-            targetDirection = new Vector3(Random.Range(-maxDistance, maxDistance), animator.transform.position.y, Random.Range(-maxDistance, maxDistance));
+            // draw a vector in a random direction of particular length
+            // draw a vector of targetDistance forward, rotate it random angle and add to animator.transform.position
+            // lerp also the quaternion
+            Vector3 followVector = Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up) * Vector3.forward * targetDistance;
+            // or just fan in the angle -45,45 and adjust rotation every frame
+
+            //tmpDest = new Vector3(Random.Range(-maxDistance, maxDistance), animator.transform.position.y, Random.Range(-maxDistance, maxDistance));
+            targetDestination = new Vector3(animator.transform.position.x + followVector.x, animator.transform.position.y, animator.transform.position.z + followVector.z);
         }
         else if (npc.Colliding())// won't it trigger many times?
         {
@@ -36,11 +47,12 @@ public class StrollingBehaviour : StateMachineBehaviour
         }
         // continue moving to the random direction along some path
         // if near a wall or other obstacle, calculate new reflection direction
-        Vector3 tmpDest = new Vector3(animator.transform.position.x + targetDirection.x, animator.transform.position.y, animator.transform.position.z + targetDirection.z);
 
-        animator.transform.position = Vector3.Lerp(animator.transform.position, tmpDest, Time.deltaTime * movementSpeed);
-
+        //animator.transform.position = Vector3.Lerp(animator.transform.position, targetDestination, Time.deltaTime * movementSpeed * 0.1f); // TODO: this looks very weird :D (brownian motion)
+        Vector3 smoothedPosition = Vector3.SmoothDamp(animator.transform.position, targetDestination, ref positionVelocity, positionDampTime);
+        animator.transform.position = smoothedPosition;
         // TODO: add rotations
+        // TODO: the target should be at a constant distance from the player so it won't reach it and will always keep on following it
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
