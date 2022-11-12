@@ -21,11 +21,20 @@ public class MainGameManager : MightyGameManager
     public int playerCount = 2;
     public List<GameObject> playerList = new List<GameObject>();
     public List<GameObject> playerShootSelectionList = new List<GameObject>();
-
+    [ReadOnly] public float cursorMagnitude;
+    [ReadOnly] public bool cursorMoved;
+    [ReadOnly] public bool cursorStartedMoving;
+    private MightyTimer cursorDelayTimer;
     void Start()
     {
         brain = MightyGameBrain.Instance;
         npcSpawning = GetComponent<NPCSpawning>();
+
+        // Initiate init cursor state
+        cursorMoved = false;
+        cursorStartedMoving = false;
+        var timeManager = MightyTimersManager.Instance;
+        cursorDelayTimer = timeManager.CreateTimer("CursorDelayTimer", 0.005f, 2.0f, false, true); // Create new timer (Not looping, stopped on start)
     }
 
     void Update()
@@ -66,16 +75,45 @@ public class MainGameManager : MightyGameManager
 
     }
 
+    // Handle Snapping for each player
     void HandleShootSelection() {
-        foreach (GameObject player in playerList)
+        List<GameObject> newSelected = new List<GameObject>();
+        for (int sel_id = 0; sel_id < playerShootSelectionList.Count; ++sel_id)
         {
-            controllerNumber = playerList.IndexOf(player)+1; // 1 offset as gamepads start from 1 not zero
+            DebugExtension.DebugWireSphere(playerShootSelectionList[sel_id].transform.position, Color.blue, 2f);
+
+            controllerNumber = sel_id+1; // 1 offset as gamepads start from 1 not zero
             if (useMouseAndKeyboardInput)
             {
                 Debug.LogError("Mouse and keyboard input not implemented yet!");
             }
             if (useGamePadInput)
             {
+                Vector3 cursorDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Right Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Right Stick Vertical"));
+                float cursorMagnitude = cursorDirection.magnitude;
+                Debug.Log(cursorDirection);
+                DebugExtension.DebugArrow(playerShootSelectionList[sel_id].transform.position, cursorDirection, Color.red);
+
+                if (cursorMagnitude > 0.01f)
+                {
+                    // Project long box in direction of cursor
+                    Collider[] closestNPCs = Physics.OverlapBox(playerShootSelectionList[sel_id].transform.position + new Vector3(0, 0, 25), new Vector3(5, 0, 50), Quaternion.LookRotation(cursorDirection), LayerMask.GetMask("NPC"));
+                    GameObject closestSelection = playerShootSelectionList[sel_id];
+                    float closestDistance = -1f;
+                    foreach (Collider npc in closestNPCs)
+                    {
+                        if (gameObject != npc.gameObject) // Do not select itself when collided
+                        {
+                            float distance = Vector3.Distance(playerShootSelectionList[sel_id].transform.position, npc.transform.position);
+                            if (closestDistance == -1f || distance < closestDistance)
+                            {
+                                closestDistance = distance;
+                                closestSelection = npc.gameObject;
+                            }
+                        }
+                    }
+                    playerShootSelectionList[sel_id] = closestSelection;
+                }
             }
         }
     }
