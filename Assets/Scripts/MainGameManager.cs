@@ -59,10 +59,16 @@ public class MainGameManager : MightyGameManager
 
     void HandlePlayerMovement()
     {
-        foreach (GameObject player in playerList)
+        for (int i = 0; i < playerCount; i++)
         {
+            // CHECK IF PLAYER WAS KILLED
+            if (!playerList[i])
+            {
+                SelectNewPlayer(i);
+            }
+            GameObject player = playerList[i];
             DebugExtension.DebugWireSphere(player.transform.position, colors[playerList.IndexOf(player)], 2f);
-            controllerNumber = playerList.IndexOf(player)+1; // 1 offset as gamepads start from 1 not zero
+            controllerNumber = i+1; // 1 offset as gamepads start from 1 not zero
             if (useMouseAndKeyboardInput)
             {
                 Vector3 movementDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * movementSpeed;
@@ -89,6 +95,7 @@ public class MainGameManager : MightyGameManager
         List<GameObject> newSelected = new List<GameObject>();
         for (int sel_id = 0; sel_id < playerShootSelectionList.Count; ++sel_id)
         {
+            // CHECK IF selection was killed
             if (!playerShootSelectionList[sel_id])
             {
                 SelectNewRandomNPC(sel_id);
@@ -188,6 +195,35 @@ public class MainGameManager : MightyGameManager
                     Debug.Log("Missing selection"); // TODO: corner case? ignore?
                     return;
                 }
+                bool killedSomething = false;
+                int playerKillingID = i + 1;
+                // FOR EACH PLAYER: check if removing a player from the list
+                for (int j = 0; j < playerCount; ++j)
+                {
+                    if (playerList[j] == playerShootSelectionList[i])
+                    {
+                        int playerKilledID = j + 1;
+                        if (playerKilledID == playerKillingID)
+                        {
+                            killedSomething = true;
+                            Debug.Log("Player Killed himself! -X points for player " + playerKilledID);
+                            // TODO ADD SCORING LOGIC
+                        }
+                        else
+                        {
+                            killedSomething = true;
+                            Debug.Log("Player " + playerKilledID + " killed by " + playerKillingID + " +X points for player " + playerKillingID);
+                            // TODO ADD SCORING LOGIC
+                        }
+
+                        playerList[j] = null;
+                    }
+                }
+                if (!killedSomething)
+                {
+                    killedSomething = true;
+                    Debug.Log("NPC Killed by " + playerKillingID + " +X points for player " + playerKillingID);
+                }
                 // selected ghost goes poof 
                 npcSpawning.NPCList.Remove(playerShootSelectionList[i]);
                 playerShootSelectionList[i].AddComponent<NPCDying>();
@@ -239,6 +275,29 @@ public class MainGameManager : MightyGameManager
     {
         playerShootSelectionList[sel_id] = npcSpawning.NPCList[Random.Range(0, npcSpawning.NPCList.Count)];
     }
+
+    void SelectNewPlayer(int playerListIndex)
+    {
+        List<int> idsToSelect = Enumerable.Range(0, npcSpawning.NPCList.Count).ToList();
+        for (int i = 0; i < playerCount; ++i)
+        {
+            // remove player ID from list if not dead (null)
+            if (playerList[i])
+            {
+                idsToSelect.Remove(npcSpawning.NPCList.IndexOf(playerList[i]));
+            }
+        }
+        // TODO CHECK GAME END CONDITION IF NO MORE NPCS LEFT
+        if (idsToSelect.Count == 0)
+        {
+            Debug.Log("No more NPCs left to select. Game over!");
+            // TODO CALL STOP GAME!
+            return;
+        }
+        playerList[playerListIndex] = npcSpawning.NPCList[idsToSelect[Random.Range(0, idsToSelect.Count)]];
+        playerList[playerListIndex].GetComponent<NPC>().isPosessed = true;
+    }
+
     // --- MightyGameBrain callbacks ---
 
     // This is called by MightyGameBrain on every game state enter (you decide to handle it or not)
