@@ -55,17 +55,17 @@ public class StrollingBehaviour : StateMachineBehaviour
         {
             Mighty.MightyTimersManager.Instance.RemoveTimer(directionChangeTimer);
             ResetTimer();
-            //rand = Random.Range(0, 360);
-            //targetRotation = Quaternion.Euler(animator.transform.rotation.x, rand, animator.transform.rotation.z);
+            rand = Random.Range(0, 360);
+            targetRotation = Quaternion.Euler(animator.transform.rotation.x, rand, animator.transform.rotation.z);
         }
-        else if (npc.Colliding()) // TODO: should we reset the timer on collisions?
+        else if (npc.Colliding()) // TODO: should we reset the timer on collisions? // TODO: FIX!
         {
             Debug.Log("NPC near");
             // if just collided, find new position (very small deflection so that it looks like they are avoiding collisions?)
-            float rotAngle = Random.Range(-collisionDeflectonAngle, collisionDeflectonAngle);
-            Debug.Log(rotAngle);
-            targetRotation = Quaternion.AngleAxis(rotAngle, Vector3.up);
-            Debug.Log(targetRotation.eulerAngles);
+            //float rotAngle = Random.Range(-collisionDeflectonAngle, collisionDeflectonAngle);
+            //Debug.Log(rotAngle);
+            //targetRotation = Quaternion.AngleAxis(rotAngle, Vector3.up);
+            //Debug.Log(targetRotation.eulerAngles);
         } 
         else if (WallNear(animator, out outRayHit))
         {

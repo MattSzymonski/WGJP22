@@ -55,10 +55,12 @@ public class MainGameManager : MightyGameManager
             }
              if (useGamePadInput)
             {
-                    Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
-                    DebugExtension.DebugArrow(player.transform.position, movementDirection, Color.green);
-                    float yVel = 0.0f;//player.GetComponent<Rigidbody>().velocity.y;
-                    player.GetComponent<Rigidbody>().velocity = new Vector3(movementDirection.x, yVel, movementDirection.z);
+                Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
+                DebugExtension.DebugArrow(player.transform.position, movementDirection, Color.green);
+
+                Rigidbody rb = player.GetComponent<Rigidbody>();
+                float yVel = rb.velocity.y;
+                rb.velocity = new Vector3(movementDirection.x, yVel, movementDirection.z);
             }
         }
 
