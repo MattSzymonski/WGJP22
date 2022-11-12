@@ -6,10 +6,11 @@ public class Utils
 {
     public static string IDLESTRING = "isIDLE";
     public static string STOPSTRING = "isSTOP";
-    public static void ResetTimer(out Mighty.MightyTimer timer, float timeMin, float timeMax)
+
+    public static void ResetTimer(out Mighty.MightyTimer timer, string name, float timeMin, float timeMax)
     {
         float stopDelta = Random.Range(timeMin, timeMax);
-        timer = Mighty.MightyTimersManager.Instance.CreateTimer("StopDurationTimer", stopDelta, 1f, false, true); // Create new timer (Not looping, stopped on start)
+        timer = Mighty.MightyTimersManager.Instance.CreateTimer(name, stopDelta, 1f, false, true); // Create new timer (Not looping, stopped on start)
         timer.RestartTimer();
         timer.PlayTimer();
     }

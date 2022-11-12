@@ -35,8 +35,7 @@ public class MainGameManager : MightyGameManager
         // Initiate init cursor state
         cursorMoved = false;
         cursorStartedMoving = false;
-        var timeManager = MightyTimersManager.Instance;
-        cursorDelayTimer = timeManager.CreateTimer("CursorDelayTimer", 0.005f, 2.0f, false, true); // Create new timer (Not looping, stopped on start)
+        Utils.ResetTimer(out cursorDelayTimer, "CursorDelayTimer", 0.1f, 0.1f); // TODO: tweak values?
     }
 
     void Update()
@@ -49,6 +48,7 @@ public class MainGameManager : MightyGameManager
     {
         HandlePlayerMovement();
         HandleShootSelection();
+        HandlePlayerInput();
     }
 
     void HandlePlayerMovement()
@@ -82,6 +82,11 @@ public class MainGameManager : MightyGameManager
         List<GameObject> newSelected = new List<GameObject>();
         for (int sel_id = 0; sel_id < playerShootSelectionList.Count; ++sel_id)
         {
+            if (!playerShootSelectionList[sel_id])
+            {
+                SelectNewRandomNPC(sel_id);
+            }
+
             DebugExtension.DebugPoint(playerShootSelectionList[sel_id].transform.position, colors[sel_id], 10f);
 
             controllerNumber = sel_id+1; // 1 offset as gamepads start from 1 not zero
@@ -137,6 +142,28 @@ public class MainGameManager : MightyGameManager
         }
     }
 
+    void HandlePlayerInput()
+    {
+        for (int i = 0; i < playerList.Count; ++i)
+        {
+            int controllerNr = i + 1;
+            //if (Input.GetAxis("Controller" + i + " Triggers") != 0)
+            if (Input.GetButtonDown("Controller" + controllerNr + " X"))
+            {
+                Debug.Log("Poof");
+                if (!playerShootSelectionList[i])
+                {
+                    Debug.Log("Missing selection"); // TODO: corner case? ignore?
+                    return;
+                }
+                // selected ghost goes poof 
+                npcSpawning.NPCList.Remove(playerShootSelectionList[i]);
+                playerShootSelectionList[i].AddComponent<NPCDying>();
+                playerShootSelectionList[i] = null;
+            }
+        }
+    }
+
     void HandleInput()
     {
         if (Input.GetButtonDown("Escape"))
@@ -176,6 +203,10 @@ public class MainGameManager : MightyGameManager
 
     }
 
+    void SelectNewRandomNPC(int sel_id)
+    {
+        playerShootSelectionList[sel_id] = npcSpawning.NPCList[Random.Range(0, npcSpawning.NPCList.Count)];
+    }
     // --- MightyGameBrain callbacks ---
 
     // This is called by MightyGameBrain on every game state enter (you decide to handle it or not)

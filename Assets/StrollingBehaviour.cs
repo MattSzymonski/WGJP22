@@ -35,7 +35,7 @@ public class StrollingBehaviour : StateMachineBehaviour
         if (!npc.isPosessed)
         {
             targetDestination = animator.transform.position;
-            Utils.ResetTimer(out directionChangeTimer, directionChangeTimeMin, directionChangeTimeMax);
+            Utils.ResetTimer(out directionChangeTimer, "StrollingStateTimer", directionChangeTimeMin, directionChangeTimeMax);
         }
     }
 
@@ -53,7 +53,7 @@ public class StrollingBehaviour : StateMachineBehaviour
         if (directionChangeTimer.finished)
         {
             Mighty.MightyTimersManager.Instance.RemoveTimer(directionChangeTimer);
-            Utils.ResetTimer(out directionChangeTimer, directionChangeTimeMin, directionChangeTimeMax);
+            Utils.ResetTimer(out directionChangeTimer, "StrollingStateTimer", directionChangeTimeMin, directionChangeTimeMax);
             rand = Random.Range(0, 360);
             targetRotation = Quaternion.Euler(animator.transform.rotation.x, rand, animator.transform.rotation.z);
         }

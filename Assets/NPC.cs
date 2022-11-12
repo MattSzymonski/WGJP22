@@ -21,7 +21,7 @@ public class NPC : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        Utils.ResetTimer(out stateChangeTimer, minStateChangeTime, maxStateChangeTime);
+        Utils.ResetTimer(out stateChangeTimer, "StateChangeTimer", minStateChangeTime, maxStateChangeTime);
     }
 
     // Update is called once per frame

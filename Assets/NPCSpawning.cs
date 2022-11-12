@@ -67,10 +67,10 @@ public class NPCSpawning : MonoBehaviour
         }
 
         // Select Players
-        List<int> idsToSelect = Enumerable.Range(0, NPCList.Count-1).ToList();
+        List<int> idsToSelect = Enumerable.Range(0, NPCList.Count).ToList();
         for (int i = 0; i < mainGameManager.playerCount; i++)
         {
-            int randomIndex = Random.Range(0, idsToSelect.Count-1);
+            int randomIndex = Random.Range(0, idsToSelect.Count);
             GameObject player = NPCList[randomIndex];
             player.GetComponent<NPC>().isPosessed = true;
             mainGameManager.playerList.Add(player);
@@ -78,7 +78,7 @@ public class NPCSpawning : MonoBehaviour
         // Select Players to shoot
         for (int i = 0; i < mainGameManager.playerCount; i++)
         {
-            int randomIndex = Random.Range(0, NPCList.Count-1);
+            int randomIndex = Random.Range(0, NPCList.Count);
             GameObject playerTarget = NPCList[randomIndex];
             mainGameManager.playerShootSelectionList.Add(playerTarget);
         }

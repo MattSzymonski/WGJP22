@@ -1470,9 +1470,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useMouseAndKeyboardInput: 0
-  useGamePadInput: 0
+  useGamePadInput: 1
   controllerNumber: 0
-  movementSpeed: 5
+  movementSpeed: 20
   playerCount: 2
   playerList: []
   playerShootSelectionList: []
