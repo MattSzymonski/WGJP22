@@ -26,6 +26,7 @@ public class MainGameManager : MightyGameManager
     [ReadOnly] public bool cursorMoved;
     [ReadOnly] public bool cursorStartedMoving;
     private MightyTimer cursorDelayTimer;
+    private Physics physics;
 
     void Start()
     {
@@ -101,7 +102,10 @@ public class MainGameManager : MightyGameManager
                 if (cursorMagnitude > 0.01f)
                 {
                     // Project long box in direction of cursor
+                    // TODO: cone works, but may be slow
+                    //Collider[] closestNPCs = physics.ConeCastLayer(playerShootSelectionList[sel_id].transform.position, 25f, cursorDirection, 50f, 45f, LayerMask.GetMask("NPC"));
                     Collider[] closestNPCs = Physics.OverlapBox(playerShootSelectionList[sel_id].transform.position + cursorDirection * 25f, new Vector3(2.5f, 0, 25f), Quaternion.LookRotation(cursorDirection), LayerMask.GetMask("NPC"));
+
                     DebugExtension.DebugWireSphere(playerShootSelectionList[sel_id].transform.position + cursorDirection*25f, colors[sel_id], 5f);
                     GameObject closestSelection = playerShootSelectionList[sel_id];
                     float closestDistance = -1f;
