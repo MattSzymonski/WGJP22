@@ -22,10 +22,10 @@ public class MainGameManager : MightyGameManager
     public List<GameObject> playerList = new List<GameObject>();
     public List<GameObject> playerShootSelectionList = new List<GameObject>();
     Color[] colors = { Color.red, Color.blue, Color.green };
+    private Physics physics;
     [ReadOnly] public List<bool> cursorMovedList = new List<bool>();
     [ReadOnly] public List<bool> cursorStartedMovingList = new List<bool>();
     private List<MightyTimer> cursorDelayTimerList = new List<MightyTimer>();
-    private Physics physics;
 
     void Start()
     {
@@ -33,10 +33,13 @@ public class MainGameManager : MightyGameManager
         npcSpawning = GetComponent<NPCSpawning>();
 
         // Initiate init cursor state
-        cursorMoved = false;
-        cursorStartedMoving = false;
         var timeManager = MightyTimersManager.Instance;
-        cursorDelayTimer = timeManager.CreateTimer("CursorDelayTimer", 0.005f, 2.0f, false, true); // Create new timer (Not looping, stopped on start)
+        cursorMovedList = Enumerable.Repeat(false, playerCount).ToList();
+        cursorStartedMovingList = Enumerable.Repeat(false, playerCount).ToList();
+        for (int i = 0; i < playerCount; i++)
+        {
+            cursorDelayTimerList.Add(timeManager.CreateTimer("CursorDelayTimer" + i, 0.005f, 2.0f, false, true));
+        }
     }
 
     void Update()
