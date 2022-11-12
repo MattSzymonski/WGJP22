@@ -5,12 +5,20 @@ using UnityEngine;
 public class NPC : MonoBehaviour
 {
     public bool isPosessed = false;
+
+    private int nextStateChangeDelta = 0;
+    public int minStateChangeTime = 200;
+    public int maxStateChangeTime = 600;
+
+    private Mighty.MightyTimer directionChangeTimer;
+
     private bool collided = false;
     private Animator animator;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
+        //Utils.ResetTimer();
     }
 
     // Update is called once per frame
@@ -20,6 +28,7 @@ public class NPC : MonoBehaviour
         {
             animator.SetBool("isIDLE", true);  // isIDLE
         }
+        // overarching state machine - changes state every N seconds
         
     }
 

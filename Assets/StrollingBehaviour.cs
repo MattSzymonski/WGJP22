@@ -6,14 +6,13 @@ public class StrollingBehaviour : StateMachineBehaviour
 {
     public float movementSpeed = 0.01f;
     public float targetDistance = 1f;
-    public float rotationSpeed = 1f;
+    public float rotationSpeed = 0.1f;
     public float raycastDistance = 5f;
     public float wallCollisionDeflectionAngle = 30f;
     public float collisionDeflectonAngle = 15f;
 
     public float positionDampTime = 0.12f;
 
-    private int nextDirectionChangeDelta = 0;
     public int directionChangeTimeMin = 30;
     public int directionChangeTimeMax = 100;
 
@@ -36,8 +35,7 @@ public class StrollingBehaviour : StateMachineBehaviour
         if (!npc.isPosessed)
         {
             targetDestination = animator.transform.position;
-            nextDirectionChangeDelta = Random.Range(directionChangeTimeMin, directionChangeTimeMax);
-            ResetTimer();
+            Utils.ResetTimer(out directionChangeTimer, directionChangeTimeMin, directionChangeTimeMax);
         }
     }
 
@@ -55,7 +53,7 @@ public class StrollingBehaviour : StateMachineBehaviour
         if (directionChangeTimer.finished)
         {
             Mighty.MightyTimersManager.Instance.RemoveTimer(directionChangeTimer);
-            ResetTimer();
+            Utils.ResetTimer(out directionChangeTimer, directionChangeTimeMin, directionChangeTimeMax);
             rand = Random.Range(0, 360);
             targetRotation = Quaternion.Euler(animator.transform.rotation.x, rand, animator.transform.rotation.z);
         }
@@ -94,10 +92,10 @@ public class StrollingBehaviour : StateMachineBehaviour
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
+    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        rb.velocity = Vector3.zero; 
+    }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -119,14 +117,6 @@ public class StrollingBehaviour : StateMachineBehaviour
             return !IsNPC(outRayHit.transform);
         }
         return false;
-    }
-
-    private void ResetTimer()
-    {
-        nextDirectionChangeDelta = Random.Range(directionChangeTimeMin, directionChangeTimeMax);
-        directionChangeTimer = Mighty.MightyTimersManager.Instance.CreateTimer("DirectionChangeTimer", nextDirectionChangeDelta, 1f, false, true); // Create new timer (Not looping, stopped on start)
-        directionChangeTimer.RestartTimer();
-        directionChangeTimer.PlayTimer();
     }
 
     private bool IsNPC(Transform trans)
