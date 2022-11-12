@@ -14,8 +14,8 @@ public class StrollingBehaviour : StateMachineBehaviour
     public float positionDampTime = 0.12f;
 
     private int nextDirectionChangeDelta = 0;
-    public int directionChangeTimeMin = 1;
-    public int directionChangeTimeMax = 10;
+    public int directionChangeTimeMin = 30;
+    public int directionChangeTimeMax = 100;
 
     private Mighty.MightyTimer directionChangeTimer;
 
@@ -32,6 +32,7 @@ public class StrollingBehaviour : StateMachineBehaviour
         Debug.Log("Entered Strolling!");
         npc = animator.GetComponent<NPC>();
         rb = animator.GetComponent<Rigidbody>();
+        animator.transform.rotation = Quaternion.Euler(animator.transform.rotation.x, Random.Range(0, 360), animator.transform.rotation.z);
         if (!npc.isPosessed)
         {
             targetDestination = animator.transform.position;
@@ -122,6 +123,7 @@ public class StrollingBehaviour : StateMachineBehaviour
 
     private void ResetTimer()
     {
+        nextDirectionChangeDelta = Random.Range(directionChangeTimeMin, directionChangeTimeMax);
         directionChangeTimer = Mighty.MightyTimersManager.Instance.CreateTimer("DirectionChangeTimer", nextDirectionChangeDelta, 1f, false, true); // Create new timer (Not looping, stopped on start)
         directionChangeTimer.RestartTimer();
         directionChangeTimer.PlayTimer();
