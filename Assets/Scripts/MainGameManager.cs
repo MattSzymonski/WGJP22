@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
 
-
 public class MainGameManager : MightyGameManager
 {
     MightyGameBrain brain;
@@ -92,7 +91,17 @@ public class MainGameManager : MightyGameManager
             }
             if (useGamePadInput)
             {
-                Vector3 cursorDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Right Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Right Stick Vertical")).normalized;
+                Vector3 cursorDirection;
+                // Check if OSX as OSX uses different axis names (for XBOX controller on Windows, right stick is axis 3 and 4, on OSX it's 2 and 3) 
+                if (Application.platform == RuntimePlatform.OSXEditor)
+                {
+                    cursorDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Triggers"), 0, -Input.GetAxis("Controller" + controllerNumber + " Right Stick Horizontal")).normalized;
+                }
+                else
+                {
+                    cursorDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Right Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Right Stick Vertical")).normalized;
+                }
+
                 //Vector3 cursorDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")).normalized;
 
                 float cursorMagnitude = cursorDirection.magnitude;
