@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using NaughtyAttributes;
 using UnityEngine;
+using System.Linq;
 
 public class MainGameManager : MightyGameManager
 {
@@ -21,10 +22,9 @@ public class MainGameManager : MightyGameManager
     public List<GameObject> playerList = new List<GameObject>();
     public List<GameObject> playerShootSelectionList = new List<GameObject>();
     Color[] colors = { Color.red, Color.blue, Color.green };
-    [ReadOnly] public float cursorMagnitude;
-    [ReadOnly] public bool cursorMoved;
-    [ReadOnly] public bool cursorStartedMoving;
-    private MightyTimer cursorDelayTimer;
+    [ReadOnly] public List<bool> cursorMovedList = new List<bool>();
+    [ReadOnly] public List<bool> cursorStartedMovingList = new List<bool>();
+    private List<MightyTimer> cursorDelayTimerList = new List<MightyTimer>();
     private Physics physics;
 
     void Start()
@@ -35,7 +35,8 @@ public class MainGameManager : MightyGameManager
         // Initiate init cursor state
         cursorMoved = false;
         cursorStartedMoving = false;
-        Utils.ResetTimer(out cursorDelayTimer, "CursorDelayTimer", 0.1f, 0.1f); // TODO: tweak values?
+        var timeManager = MightyTimersManager.Instance;
+        cursorDelayTimer = timeManager.CreateTimer("CursorDelayTimer", 0.005f, 2.0f, false, true); // Create new timer (Not looping, stopped on start)
     }
 
     void Update()
@@ -78,7 +79,8 @@ public class MainGameManager : MightyGameManager
     }
 
     // Handle Snapping for each player
-    void HandleShootSelection() {
+    void HandleShootSelection() 
+    {
         List<GameObject> newSelected = new List<GameObject>();
         for (int sel_id = 0; sel_id < playerShootSelectionList.Count; ++sel_id)
         {
@@ -88,8 +90,8 @@ public class MainGameManager : MightyGameManager
             }
 
             DebugExtension.DebugPoint(playerShootSelectionList[sel_id].transform.position, colors[sel_id], 10f);
-
             controllerNumber = sel_id+1; // 1 offset as gamepads start from 1 not zero
+
             if (useMouseAndKeyboardInput)
             {
                 Debug.LogError("Mouse and keyboard input not implemented yet!");
@@ -106,8 +108,6 @@ public class MainGameManager : MightyGameManager
                 {
                     cursorDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Right Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Right Stick Vertical")).normalized;
                 }
-
-                //Vector3 cursorDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")).normalized;
 
                 float cursorMagnitude = cursorDirection.magnitude;
                 //Debug.Log(cursorDirection);
@@ -136,7 +136,34 @@ public class MainGameManager : MightyGameManager
                             }
                         }
                     }
-                    playerShootSelectionList[sel_id] = closestSelection;
+                    if (!cursorMovedList[sel_id])
+                    {
+                        if (!cursorStartedMovingList[sel_id])
+                        {
+                            cursorDelayTimerList[sel_id].RestartTimer();
+                            cursorDelayTimerList[sel_id].PlayTimer();
+                            cursorStartedMovingList[sel_id] = true;
+                        }
+
+                        if (cursorStartedMovingList[sel_id] && cursorDelayTimerList[sel_id].finished)
+                        {
+                            playerShootSelectionList[sel_id] = closestSelection; // CHANGING SELECTION TO CLOSEST NEW !!!!
+                            Debug.Log("moving cursor");
+
+                            cursorMovedList[sel_id] = true;
+                        }
+                        else
+                        {
+                            cursorMovedList[sel_id] = false;
+                        }
+                    } 
+                }
+                if (cursorStartedMovingList[sel_id] && cursorMagnitude == 0)
+                {
+                    cursorDelayTimerList[sel_id].StopTimer();
+                    cursorDelayTimerList[sel_id].RestartTimer();
+                    cursorStartedMovingList[sel_id] = false;
+                    cursorMovedList[sel_id] = false;
                 }
             }
         }
