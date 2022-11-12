@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6354458048317528239}
   m_Layer: 7
   m_Name: NPC
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -149,3 +149,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af2e29b429f060b44b862772503f307f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPosessed: 0

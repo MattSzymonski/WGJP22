@@ -14,7 +14,7 @@ public class NPC : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void Update() // randomly trigger states in the animator after set time elapsed
     {
         if (isPosessed)
         {
@@ -25,7 +25,7 @@ public class NPC : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        collided = true;
+        collided = true; // TODO: what when we keep receiving collision info? introduce a cooldown?
     }
     private void OnCollisionExit(Collision collision)
     {

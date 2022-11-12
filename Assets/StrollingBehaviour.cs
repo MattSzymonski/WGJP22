@@ -8,6 +8,8 @@ public class StrollingBehaviour : StateMachineBehaviour
     public float targetDistance = 1f;
     public float rotationSpeed = 1f;
     public float raycastDistance = 5f;
+    public float wallCollisionDeflectionAngle = 30f;
+    public float collisionDeflectonAngle = 15f;
 
     public float positionDampTime = 0.12f;
 
@@ -30,14 +32,20 @@ public class StrollingBehaviour : StateMachineBehaviour
         Debug.Log("Entered Strolling!");
         npc = animator.GetComponent<NPC>();
         rb = animator.GetComponent<Rigidbody>();
-        targetDestination = animator.transform.position;
-        nextDirectionChangeDelta = Random.Range(directionChangeTimeMin, directionChangeTimeMax);
-        ResetTimer();
+        if (!npc.isPosessed)
+        {
+            targetDestination = animator.transform.position;
+            nextDirectionChangeDelta = Random.Range(directionChangeTimeMin, directionChangeTimeMax);
+            ResetTimer();
+        }
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        if (npc.isPosessed)
+            return;
+
         // new approach
         // find a new target angle several frames and smooth interpolate between them (OPTIONAL) TODO:
         float rand;
@@ -47,12 +55,17 @@ public class StrollingBehaviour : StateMachineBehaviour
         {
             Mighty.MightyTimersManager.Instance.RemoveTimer(directionChangeTimer);
             ResetTimer();
-            rand = Random.Range(0, 360);
-            targetRotation = Quaternion.Euler(animator.transform.rotation.x, rand, animator.transform.rotation.z);
+            //rand = Random.Range(0, 360);
+            //targetRotation = Quaternion.Euler(animator.transform.rotation.x, rand, animator.transform.rotation.z);
         }
         else if (npc.Colliding()) // TODO: should we reset the timer on collisions?
         {
+            Debug.Log("NPC near");
             // if just collided, find new position (very small deflection so that it looks like they are avoiding collisions?)
+            float rotAngle = Random.Range(-collisionDeflectonAngle, collisionDeflectonAngle);
+            Debug.Log(rotAngle);
+            targetRotation = Quaternion.AngleAxis(rotAngle, Vector3.up);
+            Debug.Log(targetRotation.eulerAngles);
         } 
         else if (WallNear(animator, out outRayHit))
         {
@@ -61,7 +74,7 @@ public class StrollingBehaviour : StateMachineBehaviour
             //float angle = animator.transform.rotation.eulerAngles.y;
             Vector3 reflectVec = Vector3.Reflect(animator.transform.forward, outRayHit.normal);
             // rotate the vector in a -30,30 degree fan
-            float rotAngle = Random.Range(-30f, 30f);
+            float rotAngle = Random.Range(-wallCollisionDeflectionAngle, wallCollisionDeflectionAngle);
             Vector3 rotated = Quaternion.AngleAxis(rotAngle, Vector3.up) * reflectVec;
 
             float angle = Vector3.Angle(Vector3.forward, rotated);
@@ -99,7 +112,12 @@ public class StrollingBehaviour : StateMachineBehaviour
 
     private bool WallNear(Animator animator, out RaycastHit outRayHit)
     {
-        return Physics.Raycast(animator.transform.position, animator.transform.forward, out outRayHit, raycastDistance);
+        bool hit = Physics.Raycast(animator.transform.position, animator.transform.forward, out outRayHit, raycastDistance);
+        if (hit)
+        {
+            return !IsNPC(outRayHit.transform);
+        }
+        return false;
     }
 
     private void ResetTimer()
@@ -107,5 +125,10 @@ public class StrollingBehaviour : StateMachineBehaviour
         directionChangeTimer = Mighty.MightyTimersManager.Instance.CreateTimer("DirectionChangeTimer", nextDirectionChangeDelta, 1f, false, true); // Create new timer (Not looping, stopped on start)
         directionChangeTimer.RestartTimer();
         directionChangeTimer.PlayTimer();
+    }
+
+    private bool IsNPC(Transform trans)
+    {
+        return trans.tag.Contains("Player") || trans.tag.Contains("NPC");
     }
 }
