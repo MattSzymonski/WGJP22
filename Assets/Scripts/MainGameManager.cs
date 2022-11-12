@@ -64,7 +64,8 @@ public class MainGameManager : MightyGameManager
                 float yVel = 0.0f;//rb.velocity.y;
                 player.GetComponent<Rigidbody>().velocity = new Vector3(movementDirection.x, yVel, movementDirection.z);
             }
-             if (useGamePadInput)
+
+            if (useGamePadInput)
             {
                 Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
                 DebugExtension.DebugArrow(player.transform.position, movementDirection * 10, Color.green);
@@ -74,7 +75,6 @@ public class MainGameManager : MightyGameManager
                 rb.velocity = new Vector3(movementDirection.x, yVel, movementDirection.z);
             }
         }
-
     }
 
     // Handle Snapping for each player
@@ -152,6 +152,17 @@ public class MainGameManager : MightyGameManager
         }
     }
 
+    public void SpawnLevel()
+    {
+        npcSpawning.Spawn();
+
+    }
+    
+    public void ClearLevel()
+    {
+
+    }
+
     // --- MightyGameBrain callbacks ---
 
     // This is called by MightyGameBrain on every game state enter (you decide to handle it or not)
@@ -159,6 +170,9 @@ public class MainGameManager : MightyGameManager
     {
         if (exitingGameState == "GameOver") // Transition panel when leaving GameOver state
             yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", false, true));
+
+        if (enteringGameState == "Playing")
+            SpawnLevel();
 
         yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel(enteringGameState + "Panel", true, true));
     }
@@ -168,6 +182,9 @@ public class MainGameManager : MightyGameManager
     {
         if (exitingGameState == "GameOver") // Transition panel when leaving GameOver state
             yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, false));
+
+        if (exitingGameState == "Playing")
+            ClearLevel();
 
         yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel(exitingGameState + "Panel", false, true));
     }

@@ -23,50 +23,6 @@ public class NPCSpawning : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mainGameManager = GetComponent<MainGameManager>();
-        int max_iterations = 10000; // TODO Might want to change this to a bigger value
-        int iterations = 0;
-        playingFieldMask = 1 << LayerMask.NameToLayer("PlayingField");
-        NPCMask = 1 << LayerMask.NameToLayer("NPC");
-        layerMask = (playingFieldMask ); // Only check for collisions with PlayingField
-        while(currentspawnCount < spawnCount)
-        {
-            Vector3 spawnPos = spawnCenter.transform.position + Random.insideUnitSphere * spawnRadius;
-            if (Physics.Raycast(spawnPos, Vector3.down, out RaycastHit hit, 100, layerMask))
-            {
-                if(!Physics.CheckSphere(hit.point, NPC_min_distance, NPCMask))
-                {
-                    
-                    Vector3 npcPos = hit.point;
-                    npcPos.y = 1.5f;
-                    NPCList.Add(Instantiate(NPCPrefab, npcPos, Quaternion.identity));
-                    currentspawnCount++;
-                }
-            }
-            iterations++;
-            if(iterations > max_iterations)
-            {
-                Debug.LogError("Max iterations reached before all NPCs were spawned");
-                break;
-            }
-        }
-
-        // Select Players
-        List<int> idsToSelect = Enumerable.Range(0, NPCList.Count-1).ToList();
-        for(int i = 0; i < mainGameManager.playerCount; i++)
-        {
-            int randomIndex = Random.Range(0, idsToSelect.Count-1);
-            GameObject player = NPCList[randomIndex];
-            player.GetComponent<NPC>().isPosessed = true;
-            mainGameManager.playerList.Add(player);
-        }
-        // Select Players to shoot
-        for(int i = 0; i < mainGameManager.playerCount; i++)
-        {
-            int randomIndex = Random.Range(0, NPCList.Count-1);
-            GameObject playerTarget = NPCList[randomIndex];
-            mainGameManager.playerShootSelectionList.Add(playerTarget);
-        }
     }
 
     // Update is called once per frame
@@ -78,5 +34,53 @@ public class NPCSpawning : MonoBehaviour
     void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(spawnCenter.transform.position, spawnRadius);
+    }
+
+    public void Spawn()
+    { 
+        mainGameManager = GetComponent<MainGameManager>();
+        int max_iterations = 10000; // TODO Might want to change this to a bigger value
+        int iterations = 0;
+        playingFieldMask = 1 << LayerMask.NameToLayer("PlayingField");
+        NPCMask = 1 << LayerMask.NameToLayer("NPC");
+        layerMask = (playingFieldMask ); // Only check for collisions with PlayingField
+        while (currentspawnCount < spawnCount)
+        {
+            Vector3 spawnPos = spawnCenter.transform.position + Random.insideUnitSphere * spawnRadius;
+            if (Physics.Raycast(spawnPos, Vector3.down, out RaycastHit hit, 100, layerMask))
+            {
+                if (!Physics.CheckSphere(hit.point, NPC_min_distance, NPCMask))
+                {
+                    
+                    Vector3 npcPos = hit.point;
+                    npcPos.y = 1.5f;
+                    NPCList.Add(Instantiate(NPCPrefab, npcPos, Quaternion.identity));
+                    currentspawnCount++;
+                }
+            }
+            iterations++;
+            if (iterations > max_iterations)
+            {
+                Debug.LogError("Max iterations reached before all NPCs were spawned");
+                break;
+            }
+        }
+
+        // Select Players
+        List<int> idsToSelect = Enumerable.Range(0, NPCList.Count-1).ToList();
+        for (int i = 0; i < mainGameManager.playerCount; i++)
+        {
+            int randomIndex = Random.Range(0, idsToSelect.Count-1);
+            GameObject player = NPCList[randomIndex];
+            player.GetComponent<NPC>().isPosessed = true;
+            mainGameManager.playerList.Add(player);
+        }
+        // Select Players to shoot
+        for (int i = 0; i < mainGameManager.playerCount; i++)
+        {
+            int randomIndex = Random.Range(0, NPCList.Count-1);
+            GameObject playerTarget = NPCList[randomIndex];
+            mainGameManager.playerShootSelectionList.Add(playerTarget);
+        }
     }
 }

@@ -6,7 +6,6 @@ public class NPC : MonoBehaviour
 {
     public bool isPosessed = false;
 
-    private int nextStateChangeDelta = 0;
     public int minStateChangeTime = 10;
     public int maxStateChangeTime = 30;
 
@@ -50,7 +49,6 @@ public class NPC : MonoBehaviour
             }
 
         }
-        
     }
 
     private void OnCollisionEnter(Collision collision)
