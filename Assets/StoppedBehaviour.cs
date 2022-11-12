@@ -7,17 +7,19 @@ public class StoppedBehaviour : StateMachineBehaviour
     public NPC npc; 
     private Mighty.MightyTimer stopDurationTimer;
 
-    public int stopDurationTimeMin = 50;
-    public int stopDurationTimeMax = 200;
+    public int stopDurationTimeMin = 10;
+    public int stopDurationTimeMax = 15;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         npc = animator.GetComponent<NPC>();
+        Debug.Log("Entered STOP");
+        /*
         if (!npc.isPosessed)
         {
             Utils.ResetTimer(out stopDurationTimer, stopDurationTimeMin, stopDurationTimeMax);
-        }
+        }*/
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -26,10 +28,10 @@ public class StoppedBehaviour : StateMachineBehaviour
         if (npc.isPosessed)
             return;
 
-        if (stopDurationTimer.finished)
+        /*if (stopDurationTimer.finished)
         {
-            animator.SetBool("isSTOP", false);
-        }
+            animator.SetBool(Utils.STOPSTRING, false);
+        }*/
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

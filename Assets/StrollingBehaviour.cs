@@ -94,7 +94,8 @@ public class StrollingBehaviour : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        rb.velocity = Vector3.zero; 
+        rb.velocity = Vector3.zero;
+        Debug.Log("Exit STROLLING");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

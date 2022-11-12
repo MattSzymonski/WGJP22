@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Utils
 {
+    public static string IDLESTRING = "isIDLE";
+    public static string STOPSTRING = "isSTOP";
     public static void ResetTimer(out Mighty.MightyTimer timer, float timeMin, float timeMax)
     {
         float stopDelta = Random.Range(timeMin, timeMax);

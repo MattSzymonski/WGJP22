@@ -7,10 +7,12 @@ public class NPC : MonoBehaviour
     public bool isPosessed = false;
 
     private int nextStateChangeDelta = 0;
-    public int minStateChangeTime = 200;
-    public int maxStateChangeTime = 600;
+    public int minStateChangeTime = 10;
+    public int maxStateChangeTime = 30;
 
-    //public int 
+    // probability thresholds
+    public int movementThreshold = 50; 
+    public int stopThreshold = 100;
 
     private Mighty.MightyTimer stateChangeTimer;
 
@@ -28,13 +30,24 @@ public class NPC : MonoBehaviour
     {
         if (isPosessed)
         {
-            animator.SetBool("isIDLE", true);  // isIDLE
+            animator.SetBool(Utils.IDLESTRING, true);  // isIDLE
             return;
         }
         // overarching state machine - changes state every N seconds
         if (stateChangeTimer.finished)
         {
             // assign probabilities?
+            int thresh = Random.Range(0, 100);
+
+            if (thresh < movementThreshold)
+            {
+                animator.SetBool(Utils.IDLESTRING, false);
+                animator.SetBool(Utils.STOPSTRING, false);
+            } else if (thresh < stopThreshold)
+            {
+                animator.SetBool(Utils.IDLESTRING, false);
+                animator.SetBool(Utils.STOPSTRING, true);
+            }
 
         }
         

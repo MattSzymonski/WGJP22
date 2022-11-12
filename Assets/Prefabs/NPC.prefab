@@ -150,3 +150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPosessed: 0
+  minStateChangeTime: 10
+  maxStateChangeTime: 30
+  movementThreshold: 50
+  stopThreshold: 100
