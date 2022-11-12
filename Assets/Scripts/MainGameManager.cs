@@ -27,14 +27,15 @@ public class MainGameManager : MightyGameManager
     [ReadOnly] public List<bool> cursorStartedMovingList = new List<bool>();
     private List<MightyTimer> cursorDelayTimerList = new List<MightyTimer>();
     private List<MightyTimer> triggerTimerList = new List<MightyTimer>();
+    private ScoringManager scoringManager;
 
     void Start()
     {
         brain = MightyGameBrain.Instance;
         npcSpawning = GetComponent<NPCSpawning>();
+        scoringManager = GameObject.Find("ScoringManager").GetComponent<ScoringManager>();
 
         // Initiate init cursor state
-        var timeManager = MightyTimersManager.Instance;
         cursorMovedList = Enumerable.Repeat(false, playerCount).ToList();
         cursorStartedMovingList = Enumerable.Repeat(false, playerCount).ToList();
         for (int i = 0; i < playerCount; i++)
@@ -207,13 +208,13 @@ public class MainGameManager : MightyGameManager
                         {
                             killedSomething = true;
                             Debug.Log("Player Killed himself! -X points for player " + playerKilledID);
-                            // TODO ADD SCORING LOGIC
+                            scoringManager.Kamikaze(playerKilledID);
                         }
                         else
                         {
                             killedSomething = true;
                             Debug.Log("Player " + playerKilledID + " killed by " + playerKillingID + " +X points for player " + playerKillingID);
-                            // TODO ADD SCORING LOGIC
+                            scoringManager.FragPlayer(playerKillingID);
                         }
 
                         playerList[j] = null;
@@ -223,6 +224,7 @@ public class MainGameManager : MightyGameManager
                 {
                     killedSomething = true;
                     Debug.Log("NPC Killed by " + playerKillingID + " +X points for player " + playerKillingID);
+                    scoringManager.FragNPC(playerKillingID);
                 }
                 // selected ghost goes poof 
                 npcSpawning.NPCList.Remove(playerShootSelectionList[i]);
@@ -268,7 +270,7 @@ public class MainGameManager : MightyGameManager
     
     public void ClearLevel()
     {
-
+        scoringManager.ResetScores();
     }
 
     void SelectNewRandomNPC(int sel_id)

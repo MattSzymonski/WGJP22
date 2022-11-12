@@ -55,18 +55,18 @@ public class ScoringManager : MonoBehaviour
 
     public void FragNPC(int toScoreIndex)
     {
-        playerScoreList[toScoreIndex] += NPCFragBonus;
+        playerScoreList[toScoreIndex - 1] += NPCFragBonus;
     }
 
     public void FragPlayer(int toScoreIndex)//, int toDeductIndex)
     {
-        playerScoreList[toScoreIndex] += playerFragBonus;
+        playerScoreList[toScoreIndex - 1] += playerFragBonus;
         //playerScoreList[toDeductIndex] -= playerFragPenalty;
     }
 
     public void Kamikaze(int kamikazeIndex)
     {
-        playerScoreList[kamikazeIndex] -= playerFragPenalty;
+        playerScoreList[kamikazeIndex - 1] -= playerFragPenalty;
     }
 
     public void ResetScores()
