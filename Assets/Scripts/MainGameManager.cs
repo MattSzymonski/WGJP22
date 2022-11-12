@@ -1,21 +1,45 @@
 using Mighty;
 using System.Collections;
 using System.Collections.Generic;
+using NaughtyAttributes;
 using UnityEngine;
 
 
 public class MainGameManager : MightyGameManager
 {
     MightyGameBrain brain;
+    NPCSpawning npcSpawning;
+
+    [Header("Movement")]
+    public bool useMouseAndKeyboardInput;   
+    public bool useGamePadInput;
+    [ShowIf("useGamePadInput")] public int controllerNumber;
+    public float movementSpeed = 5.0f;
 
     void Start()
     {
         brain = MightyGameBrain.Instance;
+        npcSpawning = GetComponent<NPCSpawning>();
     }
 
     void Update()
     {
         HandleInput();
+        HandlePlayers();
+    }
+
+    void HandlePlayers()
+    {
+        foreach (GameObject player in npcSpawning.PlayerList)
+        {
+             if (useGamePadInput)
+            {
+                    Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
+                    DebugExtension.DebugArrow(player.transform.position, movementDirection);
+                    float yVel = 0.0f;//player.GetComponent<Rigidbody>().velocity.y;
+                    player.GetComponent<Rigidbody>().velocity = new Vector3(movementDirection.x, yVel, movementDirection.z);
+            }
+        }
     }
 
     void HandleInput()

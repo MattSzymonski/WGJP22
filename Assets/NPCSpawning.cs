@@ -11,6 +11,10 @@ public class NPCSpawning : MonoBehaviour
     public float SpawnRadius = 10;
     public int SpawnCount = 30;
     public float NPC_min_distance = 1f;
+    public List<GameObject> NPCList = new List<GameObject>();
+    // Players Selecting
+    public int PlayerCount = 2;
+    public List<GameObject> PlayerList = new List<GameObject>();
 
     private int playingFieldMask;
     private int NPCMask;
@@ -19,7 +23,7 @@ public class NPCSpawning : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int max_iterations = 10000;
+        int max_iterations = 10000; // TODO Might want to change this to a bigger value
         int iterations = 0;
         playingFieldMask = 1 << LayerMask.NameToLayer("PlayingField");
         NPCMask = 1 << LayerMask.NameToLayer("NPC");
@@ -34,8 +38,8 @@ public class NPCSpawning : MonoBehaviour
                 {
                     
                     Vector3 npcPos = hit.point;
-                    npcPos.y = 0.5f;
-                    Instantiate(NPCPrefab, npcPos, Quaternion.identity);
+                    npcPos.y = 1.5f;
+                    NPCList.Add(Instantiate(NPCPrefab, npcPos, Quaternion.identity));
                     currentSpawnCount++;
                 }
             }
@@ -45,6 +49,14 @@ public class NPCSpawning : MonoBehaviour
                 Debug.LogError("Max iterations reached before all NPCs were spawned");
                 break;
             }
+        }
+
+        // Select Players
+        for(int i = 0; i < PlayerCount; i++)
+        {
+            int randomIndex = Random.Range(0, NPCList.Count);
+            PlayerList.Add(NPCList[randomIndex]);
+            NPCList.RemoveAt(randomIndex);
         }
     }
 

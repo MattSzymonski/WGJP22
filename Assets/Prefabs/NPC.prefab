@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4619791876308297804}
   - component: {fileID: 4917488992097347362}
   - component: {fileID: 1621419190318903229}
+  - component: {fileID: -637139332852329269}
   m_Layer: 7
   m_Name: NPC
   m_TagString: Untagged
@@ -98,3 +99,19 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &-637139332852329269
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2238960500659721375}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 4
+  m_CollisionDetection: 0
