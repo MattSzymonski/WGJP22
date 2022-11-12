@@ -83,4 +83,12 @@ public class NPCSpawning : MonoBehaviour
             mainGameManager.playerShootSelectionList.Add(playerTarget);
         }
     }
+
+    public void Clear()
+    {
+        foreach (GameObject npc in NPCList)
+        {
+            Destroy(npc);
+        }
+    }
 }

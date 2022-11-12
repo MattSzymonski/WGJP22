@@ -29,6 +29,9 @@ public class MainGameManager : MightyGameManager
     //private List<MightyTimer> triggerTimerList = new List<MightyTimer>();
     private ScoringManager scoringManager;
 
+    [ReadOnly]
+    public bool gameOver = false;
+
     void Start()
     {
         brain = MightyGameBrain.Instance;
@@ -48,6 +51,8 @@ public class MainGameManager : MightyGameManager
     void Update()
     {
         HandleInput();
+        if (gameOver)
+            return;
         HandlePlayers();
     }
 
@@ -65,7 +70,8 @@ public class MainGameManager : MightyGameManager
             // CHECK IF PLAYER WAS KILLED
             if (!playerList[i])
             {
-                SelectNewPlayer(i);
+                if (!SelectNewPlayer(i))
+                    break;
             }
             GameObject player = playerList[i];
             DebugExtension.DebugWireSphere(player.transform.position, colors[playerList.IndexOf(player)], 2f);
@@ -265,12 +271,15 @@ public class MainGameManager : MightyGameManager
     public void SpawnLevel()
     {
         npcSpawning.Spawn();
+        gameOver = false;
 
     }
     
     public void ClearLevel()
     {
+        Debug.Log("Cleared");
         scoringManager.ResetScores();
+        npcSpawning.Clear();
     }
 
     void SelectNewRandomNPC(int sel_id)
@@ -278,7 +287,7 @@ public class MainGameManager : MightyGameManager
         playerShootSelectionList[sel_id] = npcSpawning.NPCList[Random.Range(0, npcSpawning.NPCList.Count)];
     }
 
-    void SelectNewPlayer(int playerListIndex)
+    bool SelectNewPlayer(int playerListIndex)
     {
         List<int> idsToSelect = Enumerable.Range(0, npcSpawning.NPCList.Count).ToList();
         for (int i = 0; i < playerCount; ++i)
@@ -293,11 +302,13 @@ public class MainGameManager : MightyGameManager
         if (idsToSelect.Count == 0)
         {
             Debug.Log("No more NPCs left to select. Game over!");
-            // TODO CALL STOP GAME!
-            return;
+            brain.TransitToNextGameState("GameOver");
+            gameOver = true;
+            return false;
         }
         playerList[playerListIndex] = npcSpawning.NPCList[idsToSelect[Random.Range(0, idsToSelect.Count)]];
         playerList[playerListIndex].GetComponent<NPC>().isPosessed = true;
+        return true;
     }
 
     // --- MightyGameBrain callbacks ---
@@ -305,10 +316,12 @@ public class MainGameManager : MightyGameManager
     // This is called by MightyGameBrain on every game state enter (you decide to handle it or not)
     public override IEnumerator OnEnterGameState(string enteringGameState, string exitingGameState)
     {
-        if (exitingGameState == "GameOver") // Transition panel when leaving GameOver state
-            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", false, true));
-
-        if (enteringGameState == "Playing")
+        if (enteringGameState == "GameOver") // Transition panel when leaving GameOver state
+        {
+            //yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", false, true)); // TODO hangs here
+            ClearLevel();
+        }
+        else if (enteringGameState == "Playing")
             SpawnLevel();
 
         yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel(enteringGameState + "Panel", true, true));
@@ -319,9 +332,6 @@ public class MainGameManager : MightyGameManager
     {
         if (exitingGameState == "GameOver") // Transition panel when leaving GameOver state
             yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, false));
-
-        if (exitingGameState == "Playing")
-            ClearLevel();
 
         yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel(exitingGameState + "Panel", false, true));
     }
