@@ -461,25 +461,44 @@ public class MainGameManager : MightyGameManager
     public override IEnumerator OnEnterGameState(string enteringGameState, string exitingGameState)
     {
         //if (exitingGameState == "GameOver") // Transition panel when leaving GameOver state
-         //   yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", false, true)); // TODO hangs here
+        //    yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", false, true)); // TODO hangs here
 
-        yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel(enteringGameState + "Panel", true, true));
-
-        if (enteringGameState == "GameOver")
+        //if (exitingGameState == "MainMenu") // Transition panel when leaving GameOver state
+            
+        if (enteringGameState == "MainMenu")
         {
-            ClearLevel();
+            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("MainMenuPanel", true, true));
         }
 
         if (enteringGameState == "Playing")
+        {
             SpawnLevel();
+            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel(enteringGameState + "Panel", true, false));
+            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", false, true));
+        }
+
+        if (enteringGameState == "GameOver")
+        {
+            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, true));
+            ClearLevel();
+        }
     }
 
     // This is called by MightyGameBrain on every game state exit (you decide to handle it or not)
     public override IEnumerator OnExitGameState(string exitingGameState, string enteringGameState)
     {
-        //if (exitingGameState == "GameOver") // Transition panel when leaving GameOver state
-         //   yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, false));
+        if (exitingGameState == "MainMenu") // TO PLAYING
+        {
+            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, true));
+            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("MainMenuPanel", false, true));
+        }
 
-        yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel(exitingGameState + "Panel", false, true));
+        if (exitingGameState == "Playing")
+        {
+            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("PlayingPanel", false, true));
+        }
+        //if (exitingGameState == "GameOver") // Transition panel when leaving GameOver state
+        //   yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, false));
+
     }
 }
