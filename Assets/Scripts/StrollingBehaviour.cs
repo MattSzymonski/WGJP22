@@ -114,7 +114,6 @@ public class StrollingBehaviour : StateMachineBehaviour
         animator.transform.rotation = Quaternion.RotateTowards(animator.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
 
         animator.transform.position += animator.transform.forward * Time.deltaTime * movementSpeed;
-        Debug.Log("Dupa");
         DebugExtension.DebugArrow(animator.transform.position, movementDirection * 100, Color.yellow);
         currentPosition = animator.transform.position;
     }

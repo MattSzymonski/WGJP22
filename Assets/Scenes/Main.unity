@@ -1791,8 +1791,8 @@ MonoBehaviour:
   useMouseAndKeyboardInput: 0
   useGamePadInput: 1
   controllerNumber: 0
-  movementSpeed: 5
-  rotationSpeed: 1
+  movementSpeed: 1
+  rotationSpeed: 75
   playerCount: 2
   playerList: []
   playerShootSelectionList: []

@@ -56,8 +56,8 @@ public class NPC : MonoBehaviour
         // overarching state machine - changes state every N seconds
         if (stateChangeTimer.finished)
         {
-            //Mighty.MightyTimersManager.Instance.RemoveTimer(stateChangeTimer);
-            //Utils.ResetTimer(out stateChangeTimer, "StateChangeTimer", minStateChangeTime, maxStateChangeTime);
+            Mighty.MightyTimersManager.Instance.RemoveTimer(stateChangeTimer);
+            Utils.ResetTimer(out stateChangeTimer, "StateChangeTimer", minStateChangeTime, maxStateChangeTime);
             // assign probabilities?
             int thresh = Random.Range(0, 100);
 

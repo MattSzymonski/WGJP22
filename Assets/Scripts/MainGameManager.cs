@@ -104,9 +104,7 @@ public class MainGameManager : MightyGameManager
             if (useGamePadInput)
             {
                 // new approach
-                Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
-                Debug.Log("moving player");
-                Debug.Log(movementDirection);
+                Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical"));
 
                 if (movementDirection.magnitude < 0.02f) // TODO: fix zero vector errors
                 {
