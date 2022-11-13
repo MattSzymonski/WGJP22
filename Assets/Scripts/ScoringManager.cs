@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ public class ScoringManager : MonoBehaviour
     public List<GameObject> scoreTextList;
     public List<GameObject> possessUIList;
     public GameObject gameOverText;
+    public GameObject finalScoreText;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +27,7 @@ public class ScoringManager : MonoBehaviour
             possessUIList.Add(GameObject.Find("Player" + playerN + "possessUI"));
         }
         gameOverText = GameObject.Find("GameOverText");
+        finalScoreText = GameObject.Find("FinalScoreText");
     }
 
     // Update is called once per frame
@@ -89,7 +92,18 @@ public class ScoringManager : MonoBehaviour
 
     public void GameOver()
     {
-        int winningIndex = playerScoreList.IndexOf(playerScoreList.Max()) + 1;
-        gameOverText.GetComponent<Text>().text = "Player " + winningIndex + " wins! Score: " + playerScoreList[winningIndex - 1];
+        int winningIndex = playerScoreList.IndexOf(playerScoreList.Max()) + 1; // TODO: draw conditions?
+        gameOverText.GetComponent<Text>().text = Utils.colorNames[winningIndex - 1] + " player wins!";
+        string scoreString = "Score: \n";
+        // sort biggest score first
+        //List<Tuple<int, int>> sortedScores; // TODO: add sorting scores
+        
+        for (int i = 0; i < playerScoreList.Count; ++i)
+        {
+            scoreString += Utils.colorNames[i] + " : " + playerScoreList[i] + "\n";
+        }
+
+        finalScoreText.GetComponent<Text>().text = scoreString;
+        Debug.Log(scoreString);
     }
 }

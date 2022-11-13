@@ -6,6 +6,8 @@ public class Utils
 {
     public static string IDLESTRING = "isIDLE";
     public static string STOPSTRING = "isSTOP";
+    public static Color[] colors = { Color.red, Color.blue, Color.green };
+    public static string[] colorNames = { "Red", "Blue", "Green" };
 
     public static void ResetTimer(out Mighty.MightyTimer timer, string name, float timeMin, float timeMax)
     {

@@ -20,6 +20,7 @@ public class MainGameManager : MightyGameManager
     public bool useGamePadInput;
     [ShowIf("useGamePadInput")] public int controllerNumber;
     public float movementSpeed = 5.0f;
+    public float rotationSpeed = 0.1f;
 
     // Players Selecting
     [Header("Players")]
@@ -27,7 +28,6 @@ public class MainGameManager : MightyGameManager
     public List<GameObject> playerList = new List<GameObject>();
     public List<GameObject> playerShootSelectionList = new List<GameObject>();
     public static Color multiSelecton = new Color(1,1,0,1);
-    public static Color[] colors = { Color.red, Color.blue, Color.green };
     private Physics physics;
     [ReadOnly] public List<bool> cursorMovedList = new List<bool>();
     [ReadOnly] public List<bool> cursorStartedMovingList = new List<bool>();
@@ -87,7 +87,7 @@ public class MainGameManager : MightyGameManager
             GameObject player = playerList[i];
             if (playerList.Count > 0)
             {
-                DebugExtension.DebugWireSphere(player.transform.position, colors[playerList.IndexOf(player)], 2f);
+                DebugExtension.DebugWireSphere(player.transform.position, Utils.colors[playerList.IndexOf(player)], 2f);
             }
             controllerNumber = i+1; // 1 offset as gamepads start from 1 not zero
             if (useMouseAndKeyboardInput)
@@ -101,14 +101,52 @@ public class MainGameManager : MightyGameManager
             if (useGamePadInput)
             {
                 Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
-                movementDirection = Quaternion.AngleAxis(CameraAdjustementAngle, Vector3.up) * movementDirection;
+                
+                Vector3 oldDirection = new Vector3(player.transform.forward.x, 0f, player.transform.forward.z);
+                DebugExtension.DebugArrow(player.transform.position, oldDirection * 10, Color.cyan);
 
+                float angle = Vector3.Angle(oldDirection, movementDirection);
+                movementDirection = Quaternion.AngleAxis(angle, Vector3.up) * movementDirection;
+                Debug.Log("Rotation angle: " + angle);
+                Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.up);
+                Debug.Log("current rotation angle: " + targetRotation.eulerAngles.y);
 
                 DebugExtension.DebugArrow(player.transform.position, movementDirection * 10, Color.green);
 
                 Rigidbody rb = player.GetComponent<Rigidbody>();
                 float yVel = rb.velocity.y;
                 rb.velocity = new Vector3(movementDirection.x, yVel, movementDirection.z);
+                player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                
+                /* ANOTHER APPROACH
+                // go constant speed forward (TODO: move at varying speeds)
+                Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical"));
+                //float magnitude = movementDirection.magnitude;
+
+                player.transform.position = new Vector3(player.transform.position.x + movementDirection.normalized.x * movementSpeed, player.transform.position.y, player.transform.position.z + movementDirection.normalized.z * movementSpeed);
+                // rotate slerping where we are pointing
+
+                DebugExtension.DebugArrow(player.transform.position, movementDirection.normalized * 10, Color.green);
+
+                /*if (movementDirection == Vector3.zero)
+                {
+                    if (previousMovementDireciton == Vector3.zero) //for fixing Zero roation quat
+                    {
+                        transform.rotation = Quaternion.identity;
+                    }
+                    else
+                    {
+                        transform.rotation = Quaternion.LookRotation(previousMovemen, Vector3.up);
+                    }
+                }
+                else
+                {
+                Quaternion targetRotation = Quaternion.Euler(movementDirection);
+                player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                //player.transform.rotation = Quaternion.LookRotation(movementDirection, Vector3.up);
+                    //previousLookDirection = lookDirection;
+                //}
+                */
             }
         }
     }
@@ -129,7 +167,7 @@ public class MainGameManager : MightyGameManager
 
 
 
-            DebugExtension.DebugPoint(playerShootSelectionList[sel_id].transform.position, colors[sel_id], 10f);
+            DebugExtension.DebugPoint(playerShootSelectionList[sel_id].transform.position, Utils.colors[sel_id], 10f);
             controllerNumber = sel_id+1; // 1 offset as gamepads start from 1 not zero
 
             if (useMouseAndKeyboardInput)
@@ -154,7 +192,7 @@ public class MainGameManager : MightyGameManager
 
                 float cursorMagnitude = cursorDirection.magnitude;
                 //Debug.Log(cursorDirection);
-                DebugExtension.DebugArrow(playerShootSelectionList[sel_id].transform.position, cursorDirection * 10, colors[sel_id]);
+                DebugExtension.DebugArrow(playerShootSelectionList[sel_id].transform.position, cursorDirection * 10, Utils.colors[sel_id]);
 
                 if (cursorMagnitude > 0.01f)
                 {
@@ -163,7 +201,7 @@ public class MainGameManager : MightyGameManager
                     //Collider[] closestNPCs = physics.ConeCastLayer(playerShootSelectionList[sel_id].transform.position, 25f, cursorDirection, 50f, 45f, LayerMask.GetMask("NPC"));
                     Collider[] closestNPCs = Physics.OverlapBox(playerShootSelectionList[sel_id].transform.position + cursorDirection * 25f, new Vector3(2.5f, 0, 25f), Quaternion.LookRotation(cursorDirection), LayerMask.GetMask("NPC"));
 
-                    DebugExtension.DebugWireSphere(playerShootSelectionList[sel_id].transform.position + cursorDirection*25f, colors[sel_id], 5f);
+                    DebugExtension.DebugWireSphere(playerShootSelectionList[sel_id].transform.position + cursorDirection*25f, Utils.colors[sel_id], 5f);
                     GameObject closestSelection = playerShootSelectionList[sel_id];
                     float closestDistance = -1f;
                     foreach (Collider npc in closestNPCs)
@@ -197,7 +235,7 @@ public class MainGameManager : MightyGameManager
                                 {
                                     if (playerShootSelectionList[i] != null && sel_id != i)
                                     {
-                                        playerShootSelectionList[sel_id].transform.GetComponentInChildren<Outline>().OutlineColor = MainGameManager.colors[i];
+                                        playerShootSelectionList[sel_id].transform.GetComponentInChildren<Outline>().OutlineColor = Utils.colors[i];
                                         break;
                                     }
                                 }
@@ -212,7 +250,7 @@ public class MainGameManager : MightyGameManager
 
                             if (HighlightMultiselection(sel_id) == 1) // if just us on this ghost, colour with our outline (otherwise leaves yellow)
                             {
-                                closestSelection.transform.GetComponentInChildren<Outline>().OutlineColor = MainGameManager.colors[sel_id]; // Add  outline
+                                closestSelection.transform.GetComponentInChildren<Outline>().OutlineColor = Utils.colors[sel_id]; // Add  outline
                             }
 
 
@@ -368,7 +406,7 @@ public class MainGameManager : MightyGameManager
     void SelectNewRandomNPC(int sel_id)
     {
         playerShootSelectionList[sel_id] = npcSpawning.NPCList[Random.Range(0, npcSpawning.NPCList.Count)];
-        playerShootSelectionList[sel_id].transform.GetComponentInChildren<Outline>().OutlineColor = MainGameManager.colors[sel_id]; // Add outline
+        playerShootSelectionList[sel_id].transform.GetComponentInChildren<Outline>().OutlineColor = Utils.colors[sel_id]; // Add outline
 
         HighlightMultiselection(sel_id);
     }
@@ -399,6 +437,7 @@ public class MainGameManager : MightyGameManager
             // remove player ID from list if not dead (null)
             if (playerList[i])
             {
+                playerList[i].GetComponent<NPC>().isPosessed = false;
                 idsToSelect.Remove(npcSpawning.NPCList.IndexOf(playerList[i]));
             }
         }

@@ -69,12 +69,18 @@ public class NPCSpawning : MonoBehaviour
 
         // Select Players
         List<int> idsToSelect = Enumerable.Range(0, NPCList.Count).ToList();
+        List<int> takenIdxs = new List<int>();
         for (int i = 0; i < mainGameManager.playerCount; i++)
         {
-            int randomIndex = Random.Range(0, idsToSelect.Count);
+            int randomIndex = -1;
+            while (randomIndex == -1 || takenIdxs.Contains(randomIndex))
+            {
+                randomIndex = Random.Range(0, idsToSelect.Count);
+            }
             GameObject player = NPCList[randomIndex];
             player.GetComponent<NPC>().isPosessed = true;
             mainGameManager.playerList.Add(player);
+            takenIdxs.Add(randomIndex);
         }
         // Select Players to shoot
         for (int i = 0; i < mainGameManager.playerCount; i++)
@@ -83,7 +89,7 @@ public class NPCSpawning : MonoBehaviour
             GameObject playerTarget = NPCList[randomIndex];
             mainGameManager.playerShootSelectionList.Add(playerTarget);
 
-            playerTarget.transform.GetComponentInChildren<Outline>().OutlineColor = MainGameManager.colors[i];
+            playerTarget.transform.GetComponentInChildren<Outline>().OutlineColor = Utils.colors[i];
         }
     }
 
