@@ -151,8 +151,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPosessed: 0
-  minStateChangeTime: 10
-  maxStateChangeTime: 30
+  minStateChangeTime: 4
+  maxStateChangeTime: 7
   movementThreshold: 50
   stopThreshold: 100
   tjPosition: {fileID: 0}

@@ -36,6 +36,7 @@ public class StrollingBehaviour : StateMachineBehaviour
         npc = animator.GetComponent<NPC>();
         rb = animator.GetComponent<Rigidbody>();
         animator.transform.rotation = Quaternion.Euler(animator.transform.rotation.x, Random.Range(0, 360), animator.transform.rotation.z);
+        previousMovementDirection = animator.transform.forward;
         if (!npc.isPosessed)
         {
             //targetDestination = animator.transform.position;

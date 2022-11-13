@@ -99,6 +99,7 @@ MonoBehaviour:
   positionDampTime: 0.12
   directionChangeTimeMin: 2
   directionChangeTimeMax: 6
+  wallHitTimerCooldown: 2
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
   previousMovementDirection: {x: 0, y: 0, z: 0}
   currentPosition: {x: 0, y: 0, z: 0}
@@ -116,8 +117,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npc: {fileID: 0}
-  stopDurationTimeMin: 3
-  stopDurationTimeMax: 15
+  stopDurationTimeMin: 1
+  stopDurationTimeMax: 3
 --- !u!1101 &-3122798239116582842
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
