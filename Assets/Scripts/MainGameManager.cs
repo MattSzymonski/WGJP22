@@ -39,6 +39,7 @@ public class MainGameManager : MightyGameManager
 
     [ReadOnly]
     public bool gameOver = false;
+    public bool initialized = false;
 
     void Start()
     {
@@ -60,7 +61,7 @@ public class MainGameManager : MightyGameManager
     void Update()
     {
         HandleInput();
-        if (gameOver)
+        if (gameOver || !initialized)
             return;
         HandlePlayers();
         UpdateUI();
@@ -358,14 +359,14 @@ public class MainGameManager : MightyGameManager
         SpawnMap();
         npcSpawning.Spawn();
         gameOver = false;
-
+        initialized = true;
     }
     
     public void ClearLevel()
     {
-        Debug.Log("Cleared");
         scoringManager.ResetScores();
         npcSpawning.Clear();
+        initialized = false;
     }
 
     void SelectNewRandomNPC(int sel_id)
@@ -424,22 +425,25 @@ public class MainGameManager : MightyGameManager
     // This is called by MightyGameBrain on every game state enter (you decide to handle it or not)
     public override IEnumerator OnEnterGameState(string enteringGameState, string exitingGameState)
     {
-        if (enteringGameState == "GameOver") // Transition panel when leaving GameOver state
-        {
-            //yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", false, true)); // TODO hangs here
-            ClearLevel();
-        }
-        else if (enteringGameState == "Playing")
-            SpawnLevel();
+        //if (exitingGameState == "GameOver") // Transition panel when leaving GameOver state
+         //   yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", false, true)); // TODO hangs here
 
         yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel(enteringGameState + "Panel", true, true));
+
+        if (enteringGameState == "GameOver")
+        {
+            ClearLevel();
+        }
+
+        if (enteringGameState == "Playing")
+            SpawnLevel();
     }
 
     // This is called by MightyGameBrain on every game state exit (you decide to handle it or not)
     public override IEnumerator OnExitGameState(string exitingGameState, string enteringGameState)
     {
-        if (exitingGameState == "GameOver") // Transition panel when leaving GameOver state
-            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, false));
+        //if (exitingGameState == "GameOver") // Transition panel when leaving GameOver state
+         //   yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, false));
 
         yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel(exitingGameState + "Panel", false, true));
     }

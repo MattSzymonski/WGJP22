@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 619249796}
-  m_IndirectSpecularColor: {r: 0.1829131, g: 0.2506501, b: 0.36595926, a: 1}
+  m_IndirectSpecularColor: {r: 0.18291324, g: 0.2506504, b: 0.36595976, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2373,7 +2373,6 @@ MonoBehaviour:
   scoreTextList: []
   possessUIList: []
   gameOverText: {fileID: 0}
-  killUIList: []
 --- !u!4 &1761739473
 Transform:
   m_ObjectHideFlags: 0
@@ -6989,7 +6988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.62352943}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
