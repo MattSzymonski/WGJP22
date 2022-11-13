@@ -20,7 +20,7 @@ public class ValueStorage : MonoBehaviour
 
     public void TriggerSound()
     {
-        //MightyAudioManager.Instance.PlayRandomSound("Kill_1", "Kill_2", "Kill_3", "Kill_4", "Kill_5");
+        MightyAudioManager.Instance.PlayRandomSound("Kill_1", "Kill_2", "Kill_3", "Kill_4", "Kill_5");
         // MightyVFXManager.Instance.SpawnVFX(playerShootSelectionList[i].transform.position, Quaternion.identity, 2, 0.5f, "EnergyExplosion");
     }
 

@@ -24,20 +24,15 @@ MonoBehaviour:
     transitionStage: 1
     enterGameStateNames:
     - GameOver
-    - Options
-    - Pause
     exitGameStateNames:
     - Playing
-    - Options
   - name: Playing
     transitionStage: 1
     enterGameStateNames:
     - MainMenu
     - GameOver
-    - Pause
     exitGameStateNames:
     - GameOver
-    - Pause
   - name: GameOver
     transitionStage: 1
     enterGameStateNames:
@@ -45,20 +40,3 @@ MonoBehaviour:
     exitGameStateNames:
     - MainMenu
     - Playing
-  - name: Options
-    transitionStage: 1
-    enterGameStateNames:
-    - MainMenu
-    - Pause
-    exitGameStateNames:
-    - MainMenu
-    - Pause
-  - name: Pause
-    transitionStage: 1
-    enterGameStateNames:
-    - Playing
-    - Options
-    exitGameStateNames:
-    - Playing
-    - MainMenu
-    - Options
