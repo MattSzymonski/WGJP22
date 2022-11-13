@@ -123,6 +123,241 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &145899283
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2238960500659721375, guid: 7fad191d863b64ce88a10a7dc91ba364,
+        type: 3}
+      propertyPath: m_Name
+      value: NPC
+      objectReference: {fileID: 0}
+    - target: {fileID: 2972761644664852141, guid: 7fad191d863b64ce88a10a7dc91ba364,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.79
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777784936276627658, guid: 7fad191d863b64ce88a10a7dc91ba364,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777784936276627658, guid: 7fad191d863b64ce88a10a7dc91ba364,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 18.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777784936276627658, guid: 7fad191d863b64ce88a10a7dc91ba364,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777784936276627658, guid: 7fad191d863b64ce88a10a7dc91ba364,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.84
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777784936276627658, guid: 7fad191d863b64ce88a10a7dc91ba364,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777784936276627658, guid: 7fad191d863b64ce88a10a7dc91ba364,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777784936276627658, guid: 7fad191d863b64ce88a10a7dc91ba364,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777784936276627658, guid: 7fad191d863b64ce88a10a7dc91ba364,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777784936276627658, guid: 7fad191d863b64ce88a10a7dc91ba364,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777784936276627658, guid: 7fad191d863b64ce88a10a7dc91ba364,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3777784936276627658, guid: 7fad191d863b64ce88a10a7dc91ba364,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7fad191d863b64ce88a10a7dc91ba364, type: 3}
+--- !u!1 &145899284 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2238960500659721375, guid: 7fad191d863b64ce88a10a7dc91ba364,
+    type: 3}
+  m_PrefabInstance: {fileID: 145899283}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &145899285 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2452929471546119191, guid: 7fad191d863b64ce88a10a7dc91ba364,
+    type: 3}
+  m_PrefabInstance: {fileID: 145899283}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &145899286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145899284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e411be1c61c2d3b4cae1f1286a46466c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progress: 0
+  animatedElement: 0
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationDirectionMultiplier: {x: 0, y: 0, z: 0}
+  evaluationSpeed: 0
+  looping: 0
+  blockIfActive: 0
+  updateStartValues: 0
+  startOnPlay: 0
+  detectCollisions: 0
+  tagsToCollide: []
+--- !u!114 &145899287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145899285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e411be1c61c2d3b4cae1f1286a46466c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progress: 0
+  animatedElement: 2
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0047207475
+      value: 1.0008795
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.0093594
+      value: 2.0021918
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationDirectionMultiplier: {x: 1, y: 1, z: 1}
+  evaluationSpeed: 1
+  looping: 0
+  blockIfActive: 0
+  updateStartValues: 0
+  startOnPlay: 0
+  detectCollisions: 0
+  tagsToCollide: []
+--- !u!114 &145899288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 145899285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e411be1c61c2d3b4cae1f1286a46466c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progress: 0
+  animatedElement: 0
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5055945
+      value: 0.5055945
+      inSlope: -0.009510953
+      outSlope: -0.009510953
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.68817776
+    - serializedVersion: 3
+      time: 0.9916687
+      value: 0.0012512207
+      inSlope: -0.019558221
+      outSlope: -0.019558221
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.43718028
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationDirectionMultiplier: {x: 0, y: 1, z: 0}
+  evaluationSpeed: 0
+  looping: 1
+  blockIfActive: 0
+  updateStartValues: 0
+  startOnPlay: 0
+  detectCollisions: 0
+  tagsToCollide: []
 --- !u!1 &199952411
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,6 +442,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &199952414
@@ -382,6 +618,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &212506065
@@ -572,6 +809,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &228882371
@@ -747,6 +985,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &230865523
@@ -907,6 +1146,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &288032825
@@ -1097,6 +1337,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &391388708
@@ -1272,6 +1513,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &567228709
@@ -1562,6 +1804,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &730469800
@@ -1653,7 +1896,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &767855538
 Transform:
   m_ObjectHideFlags: 0
@@ -1763,6 +2006,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &807370247
@@ -1953,6 +2197,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &827611999
@@ -2128,6 +2373,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &832258382
@@ -2288,6 +2534,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &836012422
@@ -2478,6 +2725,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &852632231
@@ -2638,6 +2886,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1032570900
@@ -2813,6 +3062,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1052899895
@@ -2988,6 +3238,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1071104962
@@ -3178,6 +3429,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1166346908
@@ -3353,6 +3605,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1220458279
@@ -3444,7 +3697,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1236524976
 Transform:
   m_ObjectHideFlags: 0
@@ -3569,6 +3822,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1302012622
@@ -3744,6 +3998,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1436321744
@@ -3919,6 +4174,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1461308185
@@ -4094,6 +4350,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1513020718
@@ -4269,6 +4526,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1554465168
@@ -4429,6 +4687,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1647113333
@@ -4619,6 +4878,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1756104538
@@ -4779,6 +5039,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1757643322
@@ -4885,7 +5146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1789095630
 Transform:
   m_ObjectHideFlags: 0
@@ -5010,6 +5271,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1931018872
@@ -5185,6 +5447,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &1987605662
@@ -5360,6 +5623,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &2055833257
@@ -5535,6 +5799,7 @@ MonoBehaviour:
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
+  startOnPlay: 0
   detectCollisions: 0
   tagsToCollide: []
 --- !u!95 &2125773570
