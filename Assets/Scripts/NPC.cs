@@ -74,6 +74,16 @@ public class NPC : MonoBehaviour
                 inStop = true;
             }
         }
+
+        //for (int i = 0; i < red.materials.Length; i++)
+        //{
+        //    if (red.materials[i].name == "Ghost")
+        //    {
+        //        red.materials[0].SetFloat("_NoiseStrength", npc.dissolveStrength);
+        //    }
+        //}
+
+        
     }
 
     private void OnCollisionEnter(Collision collision)

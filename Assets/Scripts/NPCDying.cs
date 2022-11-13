@@ -30,6 +30,6 @@ public class NPCDying : MonoBehaviour
         //    Destroy(gameObject);
         //}
 
-        red.materials[0].SetFloat("_NoiseStrength", npc.dissolveStrength);
+        //red.materials[0].SetFloat("_NoiseStrength", npc.dissolveStrength);
     }
 }

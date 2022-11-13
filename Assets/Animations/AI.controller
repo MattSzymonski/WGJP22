@@ -118,7 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   npc: {fileID: 0}
   stopDurationTimeMin: 1
-  stopDurationTimeMax: 3
+  stopDurationTimeMax: 2
 --- !u!1101 &-3122798239116582842
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

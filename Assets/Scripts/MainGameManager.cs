@@ -115,12 +115,14 @@ public class MainGameManager : MightyGameManager
                 else
                 {
                     previousMovementDirectionList[i] = movementDirection;
-                }
-                movementDirection = Quaternion.AngleAxis(CameraAdjustementAngle, Vector3.up) * movementDirection;
-                Quaternion targetRotation = Quaternion.LookRotation(movementDirection);
-                player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
 
-                player.transform.position += player.transform.forward * Time.deltaTime * movementSpeed;
+                    movementDirection = Quaternion.AngleAxis(CameraAdjustementAngle, Vector3.up) * movementDirection;
+                    Quaternion targetRotation = Quaternion.LookRotation(movementDirection);
+                    player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+
+                    player.transform.position += player.transform.forward * Time.deltaTime * movementSpeed;
+                }
+               
                 DebugExtension.DebugArrow(player.transform.position, movementDirection * 10, Color.yellow);
             }
         }
@@ -413,7 +415,8 @@ public class MainGameManager : MightyGameManager
             // remove player ID from list if not dead (null)
             if (playerList[i])
             {
-                playerList[i].GetComponent<NPC>().isPosessed = false;
+                if (playerListIndex == i)
+                    playerList[i].GetComponent<NPC>().isPosessed = false;
                 idsToSelect.Remove(npcSpawning.NPCList.IndexOf(playerList[i]));
             }
         }
@@ -443,7 +446,7 @@ public class MainGameManager : MightyGameManager
         if (enteringGameState == "MainMenu")
         {
             yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, true));
-            guys.SetActive(true);
+            guys?.SetActive(true);
             // Show guys
             yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", false, false));
 
@@ -481,7 +484,7 @@ public class MainGameManager : MightyGameManager
         if (exitingGameState == "MainMenu") // TO PLAYING
         {
             yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, true));
-            guys.SetActive(false);
+            guys?.SetActive(false);
             // Hide guys
             yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("MainMenuPanel", false, true));
         }
