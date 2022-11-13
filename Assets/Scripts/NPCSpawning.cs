@@ -13,6 +13,7 @@ public class NPCSpawning : MonoBehaviour
     public float spawnRadius = 10;
     public int spawnCount = 30;
     public float NPC_min_distance = 1f;
+    public float spawnHeight = 0.1f;
     public List<GameObject> NPCList = new List<GameObject>();
     
 
@@ -33,7 +34,7 @@ public class NPCSpawning : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.DrawWireSphere(spawnCenter.transform.position, spawnRadius);
+        DebugExtension.DrawCircle(spawnCenter.transform.position, Vector3.up, Color.yellow, spawnRadius);
     }
 
     public void Spawn()
@@ -53,7 +54,7 @@ public class NPCSpawning : MonoBehaviour
                 {
                     
                     Vector3 npcPos = hit.point;
-                    npcPos.y = 1.5f;
+                    npcPos.y = spawnHeight;
                     NPCList.Add(Instantiate(NPCPrefab, npcPos, Quaternion.identity));
                     currentspawnCount++;
                 }
@@ -81,6 +82,8 @@ public class NPCSpawning : MonoBehaviour
             int randomIndex = Random.Range(0, NPCList.Count);
             GameObject playerTarget = NPCList[randomIndex];
             mainGameManager.playerShootSelectionList.Add(playerTarget);
+
+            playerTarget.transform.GetComponentInChildren<Outline>().OutlineColor = MainGameManager.colors[i];
         }
     }
 
