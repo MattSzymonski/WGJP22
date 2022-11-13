@@ -15,6 +15,7 @@ public class NPC : MonoBehaviour
 
     private Mighty.MightyTimer stateChangeTimer;
 
+
     private bool collided = false;
     private Animator animator;
     // Start is called before the first frame update
