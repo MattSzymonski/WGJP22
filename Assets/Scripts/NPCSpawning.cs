@@ -20,7 +20,7 @@ public class NPCSpawning : MonoBehaviour
     private int playingFieldMask;
     private int NPCMask;
     private int layerMask;
-    private int currentspawnCount = 0;
+    public int currentspawnCount = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,7 +38,7 @@ public class NPCSpawning : MonoBehaviour
     }
 
     public void Spawn()
-    { 
+    {
         mainGameManager = GetComponent<MainGameManager>();
         int max_iterations = 10000; // TODO Might want to change this to a bigger value
         int iterations = 0;
@@ -85,5 +85,17 @@ public class NPCSpawning : MonoBehaviour
 
             playerTarget.transform.GetComponentInChildren<Outline>().OutlineColor = MainGameManager.colors[i];
         }
+    }
+
+    public void Clear()
+    {
+        foreach (GameObject npc in NPCList)
+        {
+            Destroy(npc);
+        }
+        NPCList.Clear();
+        currentspawnCount = 0;
+        mainGameManager.playerList.Clear();
+        mainGameManager.playerShootSelectionList.Clear();
     }
 }
