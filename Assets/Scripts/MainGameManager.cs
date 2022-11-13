@@ -318,6 +318,7 @@ public class MainGameManager : MightyGameManager
         if (idsToSelect.Count == 0)
         {
             Debug.Log("No more NPCs left to select. Game over!");
+            scoringManager.GameOver();
             brain.TransitToNextGameState("GameOver");
             gameOver = true;
             return false;

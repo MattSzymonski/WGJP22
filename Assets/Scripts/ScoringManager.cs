@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ public class ScoringManager : MonoBehaviour
 
     public List<GameObject> scoreTextList;
     public List<GameObject> possessUIList;
+    public GameObject gameOverText;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +24,7 @@ public class ScoringManager : MonoBehaviour
             scoreTextList.Add(GameObject.Find("Player" + playerN + "Score"));
             possessUIList.Add(GameObject.Find("Player" + playerN + "possessUI"));
         }
+        gameOverText = GameObject.Find("GameOverText");
     }
 
     // Update is called once per frame
@@ -82,5 +85,11 @@ public class ScoringManager : MonoBehaviour
     public void SetPossessSkillFill(int playerIndex, float fill)
     {
         possessUIList[playerIndex].GetComponent<RectTransform>().transform.localScale = new Vector3(fill, fill, fill); 
+    }
+
+    public void GameOver()
+    {
+        int winningIndex = playerScoreList.IndexOf(playerScoreList.Max()) + 1;
+        gameOverText.GetComponent<Text>().text = "Player " + winningIndex + " wins! Score: " + playerScoreList[winningIndex - 1];
     }
 }

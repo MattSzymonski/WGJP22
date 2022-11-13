@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 72255322}
   - component: {fileID: 72255321}
   m_Layer: 5
-  m_Name: Player1killUI
+  m_Name: Player1possessUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1634,7 +1634,7 @@ MonoBehaviour:
   playerShootSelectionList: []
   cursorMovedList: 
   cursorStartedMovingList: 
-  possessionSkillCooldown: 5
+  possessionSkillCooldown: 0.2
   gameOver: 0
 --- !u!4 &1382038368
 Transform:
@@ -1696,7 +1696,7 @@ MonoBehaviour:
   NPCPrefab: {fileID: 2238960500659721375, guid: 7fad191d863b64ce88a10a7dc91ba364,
     type: 3}
   spawnRadius: 10
-  spawnCount: 30
+  spawnCount: 4
   NPC_min_distance: 1
   NPCList: []
 --- !u!1 &1478222635
@@ -2367,7 +2367,8 @@ MonoBehaviour:
   playerFragPenalty: 10
   NPCFragBonus: 1
   scoreTextList: []
-  killUIList: []
+  possessUIList: []
+  gameOverText: {fileID: 0}
 --- !u!4 &1761739473
 Transform:
   m_ObjectHideFlags: 0
@@ -2511,7 +2512,7 @@ GameObject:
   - component: {fileID: 1928823452}
   - component: {fileID: 1928823451}
   m_Layer: 5
-  m_Name: Player2killUI
+  m_Name: Player2possessUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

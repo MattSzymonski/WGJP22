@@ -37,7 +37,7 @@ public class NPCSpawning : MonoBehaviour
     }
 
     public void Spawn()
-    { 
+    {
         mainGameManager = GetComponent<MainGameManager>();
         int max_iterations = 10000; // TODO Might want to change this to a bigger value
         int iterations = 0;
@@ -90,5 +90,8 @@ public class NPCSpawning : MonoBehaviour
         {
             Destroy(npc);
         }
+        currentspawnCount = 0;
+        mainGameManager.playerList.Clear();
+        mainGameManager.playerShootSelectionList.Clear();
     }
 }
