@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: -637139332852329269}
   - component: {fileID: 3287368563126361389}
   - component: {fileID: 6354458048317528239}
+  - component: {fileID: 145899286}
   m_Layer: 7
   m_Name: NPC
   m_TagString: NPC
@@ -36,7 +37,7 @@ Transform:
   m_Children:
   - {fileID: 2972761644664852141}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4619791876308297804
 MeshFilter:
@@ -155,6 +156,54 @@ MonoBehaviour:
   maxStateChangeTime: 30
   movementThreshold: 50
   stopThreshold: 100
+  tjPosition: {fileID: 0}
+  tjScale: {fileID: 0}
+--- !u!114 &145899286
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2238960500659721375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e411be1c61c2d3b4cae1f1286a46466c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progress: 0
+  animatedElement: 0
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationDirectionMultiplier: {x: 0, y: 0, z: 0}
+  evaluationSpeed: 0
+  looping: 0
+  blockIfActive: 0
+  updateStartValues: 0
+  startOnPlay: 0
+  detectCollisions: 0
+  tagsToCollide: []
 --- !u!1 &2452929471546119191
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,6 +217,8 @@ GameObject:
   - component: {fileID: 7261515976169124181}
   - component: {fileID: 7596566612652251771}
   - component: {fileID: 8044448143385947801}
+  - component: {fileID: 145899288}
+  - component: {fileID: 145899287}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -183,7 +234,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2452929471546119191}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -1.16, z: 0}
+  m_LocalPosition: {x: 0, y: -1.16, z: 1.79}
   m_LocalScale: {x: 0.412696, y: 0.412696, z: 0.412696}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -295,3 +346,104 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dissolveStrength: 4
+--- !u!114 &145899288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2452929471546119191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e411be1c61c2d3b4cae1f1286a46466c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progress: 0
+  animatedElement: 0
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.5055945
+      value: 0.5055945
+      inSlope: -0.009510953
+      outSlope: -0.009510953
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.68817776
+    - serializedVersion: 3
+      time: 0.9916687
+      value: 0.0012512207
+      inSlope: -0.019558221
+      outSlope: -0.019558221
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.43718028
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationDirectionMultiplier: {x: 0, y: 1, z: 0}
+  evaluationSpeed: 0
+  looping: 1
+  blockIfActive: 0
+  updateStartValues: 0
+  startOnPlay: 0
+  detectCollisions: 0
+  tagsToCollide: []
+--- !u!114 &145899287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2452929471546119191}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e411be1c61c2d3b4cae1f1286a46466c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progress: 0
+  animatedElement: 2
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0047207475
+      value: 1.0008795
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1.0093594
+      value: 2.0021918
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationDirectionMultiplier: {x: 1, y: 1, z: 1}
+  evaluationSpeed: 1
+  looping: 0
+  blockIfActive: 0
+  updateStartValues: 0
+  startOnPlay: 0
+  detectCollisions: 0
+  tagsToCollide: []
