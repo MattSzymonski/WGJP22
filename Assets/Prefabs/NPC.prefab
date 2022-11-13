@@ -346,8 +346,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  animationDirectionMultiplier: {x: 0, y: 1, z: 0}
-  evaluationSpeed: 0.3
+  animationDirectionMultiplier: {x: 0, y: 2.5, z: 0}
+  evaluationSpeed: 0.5
   looping: 1
   blockIfActive: 0
   updateStartValues: 0
