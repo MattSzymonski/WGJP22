@@ -1517,7 +1517,7 @@ MonoBehaviour:
   useGamePadInput: 1
   controllerNumber: 0
   movementSpeed: 1
-  rotationSpeed: 100
+  rotationSpeed: 140
   playerCount: 2
   playerList: []
   playerShootSelectionList: []

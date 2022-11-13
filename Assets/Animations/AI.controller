@@ -92,13 +92,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 1
   targetDistance: 1
-  rotationSpeed: 75
-  raycastDistance: 2
+  rotationSpeed: 120
+  raycastDistance: 3
   wallCollisionDeflectionAngle: 30
   collisionDeflectonAngle: 15
   positionDampTime: 0.12
   directionChangeTimeMin: 2
   directionChangeTimeMax: 6
+  wallHitTimerCooldown: 2
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
   previousMovementDirection: {x: 0, y: 0, z: 0}
   currentPosition: {x: 0, y: 0, z: 0}

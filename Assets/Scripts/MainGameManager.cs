@@ -15,6 +15,8 @@ public class MainGameManager : MightyGameManager
     public List<GameObject> mapPrefabs;
     GameObject currentMap;
 
+    public GameObject guys;
+
     [Header("Movement")]
     public bool useMouseAndKeyboardInput;   
     public bool useGamePadInput;
@@ -106,9 +108,9 @@ public class MainGameManager : MightyGameManager
                 // new approach
                 Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical"));
 
-                if (movementDirection.magnitude < 0.02f) // TODO: fix zero vector errors
+                if (movementDirection.magnitude < 0.04f) // TODO: fix zero vector errors
                 {
-                    movementDirection = previousMovementDirectionList[i];
+                    movementDirection =  Vector3.zero; // previousMovementDirectionList[i];
                 }
                 else
                 {
@@ -428,7 +430,6 @@ public class MainGameManager : MightyGameManager
         playerList[playerListIndex].GetComponent<NPC>().isPosessed = true;
         return true;
     }
-
     // --- MightyGameBrain callbacks ---
 
     // This is called by MightyGameBrain on every game state enter (you decide to handle it or not)
@@ -438,10 +439,15 @@ public class MainGameManager : MightyGameManager
         //    yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", false, true)); // TODO hangs here
 
         //if (exitingGameState == "MainMenu") // Transition panel when leaving GameOver state
-            
+
         if (enteringGameState == "MainMenu")
         {
-            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("MainMenuPanel", true, true));
+            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, true));
+            guys.SetActive(true);
+            // Show guys
+            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", false, false));
+
+            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("MainMenuPanel", true, false));
         }
 
         if (enteringGameState == "Playing")
@@ -455,6 +461,9 @@ public class MainGameManager : MightyGameManager
         {
             yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("GameOverPanel", true, true));
 
+
+
+
             //yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", false, true));
             ClearLevel();
         }
@@ -465,12 +474,15 @@ public class MainGameManager : MightyGameManager
     {
         if (exitingGameState == "GameOver") // TO PLAYING
         {
-            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("GameOverPanel", false, true));
+            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("GameOverPanel", false, false));
+
         }
 
         if (exitingGameState == "MainMenu") // TO PLAYING
         {
             yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, true));
+            guys.SetActive(false);
+            // Hide guys
             yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("MainMenuPanel", false, true));
         }
 
