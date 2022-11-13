@@ -10,6 +10,11 @@ public class MainGameManager : MightyGameManager
     MightyGameBrain brain;
     NPCSpawning npcSpawning;
 
+    public float CameraAdjustementAngle;
+
+    public List<GameObject> mapPrefabs;
+    GameObject currentMap;
+
     [Header("Movement")]
     public bool useMouseAndKeyboardInput;   
     public bool useGamePadInput;
@@ -21,7 +26,8 @@ public class MainGameManager : MightyGameManager
     public int playerCount = 2;
     public List<GameObject> playerList = new List<GameObject>();
     public List<GameObject> playerShootSelectionList = new List<GameObject>();
-    Color[] colors = { Color.red, Color.blue, Color.green };
+    public static Color multiSelecton = new Color(1,1,0,1);
+    public static Color[] colors = { Color.red, Color.blue, Color.green };
     private Physics physics;
     [ReadOnly] public List<bool> cursorMovedList = new List<bool>();
     [ReadOnly] public List<bool> cursorStartedMovingList = new List<bool>();
@@ -81,6 +87,9 @@ public class MainGameManager : MightyGameManager
             if (useGamePadInput)
             {
                 Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
+                movementDirection = Quaternion.AngleAxis(CameraAdjustementAngle, Vector3.up) * movementDirection;
+
+
                 DebugExtension.DebugArrow(player.transform.position, movementDirection * 10, Color.green);
 
                 Rigidbody rb = player.GetComponent<Rigidbody>();
@@ -100,7 +109,11 @@ public class MainGameManager : MightyGameManager
             if (!playerShootSelectionList[sel_id])
             {
                 SelectNewRandomNPC(sel_id);
+
             }
+
+
+
 
             DebugExtension.DebugPoint(playerShootSelectionList[sel_id].transform.position, colors[sel_id], 10f);
             controllerNumber = sel_id+1; // 1 offset as gamepads start from 1 not zero
@@ -121,6 +134,9 @@ public class MainGameManager : MightyGameManager
                 {
                     cursorDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Right Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Right Stick Vertical")).normalized;
                 }
+
+                cursorDirection = Quaternion.AngleAxis(CameraAdjustementAngle, Vector3.up) * cursorDirection;
+
 
                 float cursorMagnitude = cursorDirection.magnitude;
                 //Debug.Log(cursorDirection);
@@ -158,9 +174,34 @@ public class MainGameManager : MightyGameManager
                             cursorStartedMovingList[sel_id] = true;
                         }
 
-                        if (cursorStartedMovingList[sel_id] && cursorDelayTimerList[sel_id].finished)
+                        if (cursorStartedMovingList[sel_id] && cursorDelayTimerList[sel_id].finished) // Change selection to new
                         {
+                            int playersOnGhost = HighlightMultiselection(sel_id); // including us
+                            if (playersOnGhost > 1 && playersOnGhost < 3) // one more players lasts on this ghost (but less than 2)
+                            {
+                                for (int i = 0; i < playerCount; i++)
+                                {
+                                    if (playerShootSelectionList[i] != null && sel_id != i)
+                                    {
+                                        playerShootSelectionList[sel_id].transform.GetComponentInChildren<Outline>().OutlineColor = MainGameManager.colors[i];
+                                        break;
+                                    }
+                                }
+                            }
+                            else // Nobody lasts on this ghost
+                            {
+                                playerShootSelectionList[sel_id].transform.GetComponentInChildren<Outline>().OutlineColor = new Color(0, 0, 0, 0); // Clean outline
+
+                            }
+
                             playerShootSelectionList[sel_id] = closestSelection; // CHANGING SELECTION TO CLOSEST NEW !!!!
+
+                            if (HighlightMultiselection(sel_id) == 1) // if just us on this ghost, colour with our outline (otherwise leaves yellow)
+                            {
+                                closestSelection.transform.GetComponentInChildren<Outline>().OutlineColor = MainGameManager.colors[sel_id]; // Add  outline
+                            }
+
+
                             Debug.Log("moving cursor");
 
                             cursorMovedList[sel_id] = true;
@@ -226,7 +267,22 @@ public class MainGameManager : MightyGameManager
                     Debug.Log("NPC Killed by " + playerKillingID + " +X points for player " + playerKillingID);
                     scoringManager.FragNPC(playerKillingID);
                 }
-                // selected ghost goes poof 
+
+                // selected ghost goes poof !!
+                {
+                    // Remove outline
+                    playerShootSelectionList[i].transform.GetComponentInChildren<Outline>().OutlineColor = new Color(0, 0, 0, 0);
+
+                    // Screen shake
+                    Camera.main.transform.parent.GetComponent<CameraShaker>().ShakeOnce(2.0f, 1f, 1f, 1.25f);
+
+                    // Juice
+
+
+                    // Animation
+                    playerShootSelectionList[i].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Explode");
+                }
+
                 npcSpawning.NPCList.Remove(playerShootSelectionList[i]);
                 playerShootSelectionList[i].AddComponent<NPCDying>();
                 playerShootSelectionList[i] = null;
@@ -262,10 +318,20 @@ public class MainGameManager : MightyGameManager
         }
     }
 
+    void SpawnMap()
+    {
+        GameObject mapToSpawn = mapPrefabs[Random.Range(0, mapPrefabs.Count)];
+        GameObject map = GameObject.Instantiate(mapToSpawn, Vector3.zero, Quaternion.identity) as GameObject;
+        currentMap = map;
+
+
+
+    }
+
     public void SpawnLevel()
     {
+        SpawnMap();
         npcSpawning.Spawn();
-
     }
     
     public void ClearLevel()
@@ -276,6 +342,27 @@ public class MainGameManager : MightyGameManager
     void SelectNewRandomNPC(int sel_id)
     {
         playerShootSelectionList[sel_id] = npcSpawning.NPCList[Random.Range(0, npcSpawning.NPCList.Count)];
+        playerShootSelectionList[sel_id].transform.GetComponentInChildren<Outline>().OutlineColor = MainGameManager.colors[sel_id]; // Add outline
+
+        HighlightMultiselection(sel_id);
+    }
+
+    int HighlightMultiselection(int sel_id) // returns how many players on this ghost
+    {
+        int count = 1; // including ourself
+        for (int i = 0; i < playerCount; i++)
+        {
+            if (playerShootSelectionList[i] != null)
+            {
+                if (playerShootSelectionList[i] == playerShootSelectionList[sel_id] && sel_id != i) // Same selected ghosys but not by the same player
+                {
+                    playerShootSelectionList[sel_id].transform.GetComponentInChildren<Outline>().OutlineColor = multiSelecton;
+                    ++count;
+                }
+            }
+        }
+
+        return count;
     }
 
     void SelectNewPlayer(int playerListIndex)
