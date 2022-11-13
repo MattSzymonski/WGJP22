@@ -1516,8 +1516,8 @@ MonoBehaviour:
   useMouseAndKeyboardInput: 0
   useGamePadInput: 1
   controllerNumber: 0
-  movementSpeed: 0.1
-  rotationSpeed: 1
+  movementSpeed: 1
+  rotationSpeed: 75
   playerCount: 2
   playerList: []
   playerShootSelectionList: []
@@ -1586,7 +1586,7 @@ MonoBehaviour:
   NPCPrefab: {fileID: 2238960500659721375, guid: 7fad191d863b64ce88a10a7dc91ba364,
     type: 3}
   spawnRadius: 12
-  spawnCount: 5
+  spawnCount: 10
   NPC_min_distance: 1
   spawnHeight: 0.5
   NPCList: []

@@ -55,7 +55,9 @@ public class NPCSpawning : MonoBehaviour
                     
                     Vector3 npcPos = hit.point;
                     npcPos.y = spawnHeight;
-                    NPCList.Add(Instantiate(NPCPrefab, npcPos, Quaternion.identity));
+                    GameObject npc = Instantiate(NPCPrefab, npcPos, Quaternion.identity);
+                    npc.name = "NPC" + iterations;
+                    NPCList.Add(npc);
                     currentspawnCount++;
                 }
             }
