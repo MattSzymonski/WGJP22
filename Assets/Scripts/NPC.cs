@@ -24,6 +24,7 @@ public class NPC : MonoBehaviour
 
     public TransformJuicer tjPosition;
     public TransformJuicer tjScale;
+    public bool inStop = false;
 
     SkinnedMeshRenderer red;
     ValueStorage npc;
@@ -61,14 +62,16 @@ public class NPC : MonoBehaviour
             // assign probabilities?
             int thresh = Random.Range(0, 100);
 
-            if (thresh < movementThreshold)
+            if (thresh < movementThreshold || inStop) // don't entr stop several times
             {
                 animator.SetBool(Utils.IDLESTRING, false);
                 animator.SetBool(Utils.STOPSTRING, false);
+                inStop = false;
             } else if (thresh < stopThreshold)
             {
                 animator.SetBool(Utils.IDLESTRING, false);
                 animator.SetBool(Utils.STOPSTRING, true);
+                inStop = true;
             }
         }
     }
