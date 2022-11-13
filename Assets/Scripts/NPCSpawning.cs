@@ -91,7 +91,18 @@ public class NPCSpawning : MonoBehaviour
             GameObject playerTarget = NPCList[randomIndex];
             mainGameManager.playerShootSelectionList.Add(playerTarget);
 
+            // CORNER CASE: CANNOT USE HIGHLIGHT MULTISELECTION SINCE playerShootSelectionList is not full yet
+            // Set our own colour, if repeated we will overwrite in the for loop
             playerTarget.transform.GetComponentInChildren<Outline>().OutlineColor = Utils.colors[i];
+            //Check if previously selected NPC is the same as the current one (iterate down)
+            for (int j = i-1; j >= 0; --j) 
+            {
+                if (mainGameManager.playerShootSelectionList[j] == playerTarget)
+                {
+                    playerTarget.transform.GetComponentInChildren<Outline>().OutlineColor = MainGameManager.multiSelecton;
+                    break;
+                }
+            }
         }
     }
 

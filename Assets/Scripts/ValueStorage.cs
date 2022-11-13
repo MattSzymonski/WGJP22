@@ -20,13 +20,13 @@ public class ValueStorage : MonoBehaviour
 
     public void TriggerSound()
     {
-        //MightyAudioManager.Instance.PlayRandomSound("Kill_1", "Kill_2", "Kill_3", "Kill_4", "Kill_5");
+        MightyAudioManager.Instance.PlayRandomSound("Kill_1", "Kill_2", "Kill_3", "Kill_4", "Kill_5");
         // MightyVFXManager.Instance.SpawnVFX(playerShootSelectionList[i].transform.position, Quaternion.identity, 2, 0.5f, "EnergyExplosion");
     }
 
     public void TriggerShake()
     {
-        Camera.main.transform.parent.GetComponent<CameraShaker>().ShakeOnce(2.4f, 1f, 1f, 1.25f);
+        Camera.main.transform.parent.GetComponent<CameraShaker>().ShakeOnce(2.0f, 0.7f, 1f, 1.55f);
     }
 
 }
