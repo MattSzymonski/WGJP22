@@ -46,6 +46,8 @@ namespace Mighty
         [Tooltip("Jucer will not play if called while already active")] public bool blockIfActive;
         [ShowIf("blockIfActive")] [Tooltip("Each call juicer will update start values of position, rotation and scale")] public bool updateStartValues;
 
+        public bool startOnPlay;
+
         bool active;
         float evaluateState;  
 
@@ -60,6 +62,11 @@ namespace Mighty
         void Start()
         {
             SetStartValues();
+         
+            if (startOnPlay)
+            {
+                StartJuicing();
+            }
         }
 
         void Update()

@@ -1,9 +1,11 @@
+using Mighty;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NPC : MonoBehaviour
 {
+
     public bool isPosessed = false;
 
     public int minStateChangeTime = 10;
@@ -18,11 +20,22 @@ public class NPC : MonoBehaviour
 
     private bool collided = false;
     private Animator animator;
+
+
+    public TransformJuicer tjPosition;
+    public TransformJuicer tjScale;
+
+
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         Utils.ResetTimer(out stateChangeTimer, "StateChangeTimer", minStateChangeTime, maxStateChangeTime);
+
+
+        TransformJuicer[] juicers = transform.GetComponentsInChildren<TransformJuicer>();
+        tjPosition = juicers[0];
+        tjScale = juicers[1];
     }
 
     // Update is called once per frame
@@ -48,7 +61,6 @@ public class NPC : MonoBehaviour
                 animator.SetBool(Utils.IDLESTRING, false);
                 animator.SetBool(Utils.STOPSTRING, true);
             }
-
         }
     }
 

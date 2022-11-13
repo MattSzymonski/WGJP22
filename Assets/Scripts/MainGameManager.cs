@@ -295,10 +295,13 @@ public class MainGameManager : MightyGameManager
                     Camera.main.transform.parent.GetComponent<CameraShaker>().ShakeOnce(2.4f, 1f, 1f, 1.25f);
 
                     // Juice
-
+                    playerShootSelectionList[i].GetComponent<NPC>().tjScale.StartJuicing();
 
                     // Animation
                     playerShootSelectionList[i].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Explode");
+
+                    // Play sound
+
                 }
 
                 npcSpawning.NPCList.Remove(playerShootSelectionList[i]);
