@@ -28,7 +28,7 @@ public class StrollingBehaviour : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Debug.Log("Entered Strolling!");
+        //Debug.Log("Entered Strolling!");
         npc = animator.GetComponent<NPC>();
         rb = animator.GetComponent<Rigidbody>();
         animator.transform.rotation = Quaternion.Euler(animator.transform.rotation.x, Random.Range(0, 360), animator.transform.rotation.z);
@@ -59,7 +59,7 @@ public class StrollingBehaviour : StateMachineBehaviour
         }
         else if (npc.Colliding()) // TODO: should we reset the timer on collisions? // TODO: FIX!
         {
-            Debug.Log("NPC near");
+            //Debug.Log("NPC near");
             // if just collided, find new position (very small deflection so that it looks like they are avoiding collisions?)
             //float rotAngle = Random.Range(-collisionDeflectonAngle, collisionDeflectonAngle);
             //Debug.Log(rotAngle);
@@ -68,10 +68,11 @@ public class StrollingBehaviour : StateMachineBehaviour
         } 
         else if (WallNear(animator, out outRayHit))
         {
-            Debug.Log("Wall Near!");
+            //Debug.Log("Wall Near!");
             // if near a wall or other obstacle, calculate new reflection direction 
             //float angle = animator.transform.rotation.eulerAngles.y;
             Vector3 reflectVec = Vector3.Reflect(animator.transform.forward, outRayHit.normal);
+
             // rotate the vector in a -30,30 degree fan
             float rotAngle = Random.Range(-wallCollisionDeflectionAngle, wallCollisionDeflectionAngle);
             Vector3 rotated = Quaternion.AngleAxis(rotAngle, Vector3.up) * reflectVec;
@@ -95,7 +96,7 @@ public class StrollingBehaviour : StateMachineBehaviour
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         rb.velocity = Vector3.zero;
-        Debug.Log("Exit STROLLING");
+        //Debug.Log("Exit STROLLING");
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
