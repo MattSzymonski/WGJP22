@@ -41,7 +41,7 @@ public class MainGameManager : MightyGameManager
     public bool gameOver = false;
     public bool initialized = false;
 
-    private Vector3 previousMovementDirection;
+    private List<Vector3> previousMovementDirectionList = new List<Vector3>();
 
     void Start()
     {
@@ -56,6 +56,7 @@ public class MainGameManager : MightyGameManager
         {
             cursorDelayTimerList.Add(Utils.InitializeTimer("CursorDelayTimer" + i, 0.05f, 0.05f));
             posessionTimerList.Add(Utils.InitializeTimer("PossessionDelayTimer" + i, possessionSkillCooldown, possessionSkillCooldown));
+            previousMovementDirectionList.Add(new Vector3());
         }
         scoringManager.ResetScores();
     }
@@ -102,87 +103,22 @@ public class MainGameManager : MightyGameManager
 
             if (useGamePadInput)
             {
-                /*
-                Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
-                
-                Vector3 oldDirection = new Vector3(player.transform.forward.x, 0f, player.transform.forward.z);
-                DebugExtension.DebugArrow(player.transform.position, oldDirection * 10, Color.cyan);
-
-                float angle = Vector3.Angle(oldDirection, movementDirection);
-                movementDirection = Quaternion.AngleAxis(angle, Vector3.up) * movementDirection;
-                Debug.Log("Rotation angle: " + angle);
-                Quaternion targetRotation = Quaternion.AngleAxis(angle, Vector3.up);
-                Debug.Log("current rotation angle: " + targetRotation.eulerAngles.y);
-
-                DebugExtension.DebugArrow(player.transform.position, movementDirection * 10, Color.green);
-
-                Rigidbody rb = player.GetComponent<Rigidbody>();
-                float yVel = rb.velocity.y;
-                rb.velocity = new Vector3(movementDirection.x, yVel, movementDirection.z);
-                player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-                
-                WORKING BUT NOT VERY MUCH
-                /*
-                 * Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
-
-
-                if (movementDirection == Vector3.zero)
-                {
-                    
-                    if (previousLookDirection == Vector3.zero) //for fixing Zero roation quat
-                    {
-                        transform.rotation = Quaternion.identity;
-                    }
-                    else
-                    {
-                        transform.rotation = Quaternion.LookRotation(previousLookDirection, Vector3.up);
-                    }
-                    
-                    Debug.Log("Shit");
-                }
-                else
-                {
-                    player.transform.rotation = Quaternion.LookRotation(movementDirection, Vector3.up);
-                    //previousLookDirection = lookDirection;
-                }
-
-                DebugExtension.DebugArrow(player.transform.position, movementDirection* 10, Color.yellow);
-                */
-                /* ANOTHER APPROACH
-                // go constant speed forward (TODO: move at varying speeds)
-                Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical"));
-                //float magnitude = movementDirection.magnitude;
-
-                player.transform.position = new Vector3(player.transform.position.x + movementDirection.normalized.x * movementSpeed, player.transform.position.y, player.transform.position.z + movementDirection.normalized.z * movementSpeed);
-                // rotate slerping where we are pointing
-
-                DebugExtension.DebugArrow(player.transform.position, movementDirection.normalized * 10, Color.green);
-
-                              else
-                {
-                Quaternion targetRotation = Quaternion.Euler(movementDirection);
-                player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-                //player.transform.rotation = Quaternion.LookRotation(movementDirection, Vector3.up);
-                    //previousLookDirection = lookDirection;
-                //}
-                */
-
                 // new approach
                 Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
 
-                if (movementDirection == Vector3.zero)
+                if (movementDirection.magnitude < 0.02f) // TODO: fix zero vector errors
                 {
-                    movementDirection = previousMovementDirection;
+                    movementDirection = previousMovementDirectionList[i];
                 }
                 else
                 {
-                    previousMovementDirection = movementDirection;
+                    previousMovementDirectionList[i] = movementDirection;
                 }
                 movementDirection = Quaternion.AngleAxis(CameraAdjustementAngle, Vector3.up) * movementDirection;
                 Quaternion targetRotation = Quaternion.LookRotation(movementDirection);
                 player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
 
-                //player.transform.position = Vector3.MoveTowards(player.transform.position, player.transform.forward, 100f);
+                player.transform.position += player.transform.forward * Time.deltaTime * movementSpeed;
                 DebugExtension.DebugArrow(player.transform.position, movementDirection* 10, Color.yellow);
             }
         }
