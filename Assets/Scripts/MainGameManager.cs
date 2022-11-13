@@ -290,22 +290,15 @@ public class MainGameManager : MightyGameManager
                 {
                     // Remove outline
                     playerShootSelectionList[i].transform.GetComponentInChildren<Outline>().OutlineColor = new Color(0, 0, 0, 0);
-
-                    // Screen shake
-                    Camera.main.transform.parent.GetComponent<CameraShaker>().ShakeOnce(2.4f, 1f, 1f, 1.25f);
-
-                    // Juice
-                    playerShootSelectionList[i].GetComponent<NPC>().tjScale.StartJuicing();
+       
 
                     // Animation
                     playerShootSelectionList[i].transform.GetChild(0).GetComponent<Animator>().SetTrigger("Explode");
 
-                    // Play sound
-
                 }
 
                 npcSpawning.NPCList.Remove(playerShootSelectionList[i]);
-                playerShootSelectionList[i].AddComponent<NPCDying>();
+                //playerShootSelectionList[i].AddComponent<NPCDying>();
                 playerShootSelectionList[i] = null;
             }
         }

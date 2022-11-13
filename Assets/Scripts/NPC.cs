@@ -25,6 +25,11 @@ public class NPC : MonoBehaviour
     public TransformJuicer tjPosition;
     public TransformJuicer tjScale;
 
+    SkinnedMeshRenderer red;
+    ValueStorage npc;
+
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +37,8 @@ public class NPC : MonoBehaviour
         animator = GetComponent<Animator>();
         Utils.ResetTimer(out stateChangeTimer, "StateChangeTimer", minStateChangeTime, maxStateChangeTime);
 
+        red = transform.GetChild(0).GetComponent<SkinnedMeshRenderer>();
+        npc = transform.GetChild(0).GetComponent<ValueStorage>();
 
         TransformJuicer[] juicers = transform.GetComponentsInChildren<TransformJuicer>();
         tjPosition = juicers[0];
