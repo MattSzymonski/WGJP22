@@ -105,8 +105,12 @@ public class StrollingBehaviour : StateMachineBehaviour
         }
         else if (WallNear(animator, out outRayHit))
         {
-            Vector3 reflectVec = Vector3.Reflect(animator.transform.forward, outRayHit.normal);
-            movementDirection = reflectVec;
+            //Vector3 reflectVec = Vector3.Reflect(animator.transform.forward, outRayHit.normal);
+            //movementDirection = reflectVec;
+
+
+            movementDirection = -movementDirection;
+
             previousMovementDirection = movementDirection;
         }
         movementDirection = previousMovementDirection;

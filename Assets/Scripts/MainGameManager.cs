@@ -371,6 +371,7 @@ public class MainGameManager : MightyGameManager
     
     public void ClearLevel()
     {
+        Destroy(currentMap.gameObject);
         scoringManager.ResetScores();
         npcSpawning.Clear();
         initialized = false;
@@ -452,7 +453,9 @@ public class MainGameManager : MightyGameManager
 
         if (enteringGameState == "GameOver")
         {
-            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, true));
+            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("GameOverPanel", true, true));
+
+            //yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", false, true));
             ClearLevel();
         }
     }
@@ -460,6 +463,11 @@ public class MainGameManager : MightyGameManager
     // This is called by MightyGameBrain on every game state exit (you decide to handle it or not)
     public override IEnumerator OnExitGameState(string exitingGameState, string enteringGameState)
     {
+        if (exitingGameState == "GameOver") // TO PLAYING
+        {
+            yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("GameOverPanel", false, true));
+        }
+
         if (exitingGameState == "MainMenu") // TO PLAYING
         {
             yield return StartCoroutine(MightyUIManager.Instance.ToggleUIPanel("TransitionPanel", true, true));

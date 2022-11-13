@@ -93,7 +93,7 @@ MonoBehaviour:
   movementSpeed: 1
   targetDistance: 1
   rotationSpeed: 75
-  raycastDistance: 5
+  raycastDistance: 2
   wallCollisionDeflectionAngle: 30
   collisionDeflectonAngle: 15
   positionDampTime: 0.12
