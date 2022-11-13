@@ -74,7 +74,10 @@ public class MainGameManager : MightyGameManager
                 SelectNewPlayer(i);
             }
             GameObject player = playerList[i];
-            DebugExtension.DebugWireSphere(player.transform.position, colors[playerList.IndexOf(player)], 2f);
+            if (playerList.Count > 0)
+            {
+                DebugExtension.DebugWireSphere(player.transform.position, colors[playerList.IndexOf(player)], 2f);
+            }
             controllerNumber = i+1; // 1 offset as gamepads start from 1 not zero
             if (useMouseAndKeyboardInput)
             {
@@ -274,7 +277,7 @@ public class MainGameManager : MightyGameManager
                     playerShootSelectionList[i].transform.GetComponentInChildren<Outline>().OutlineColor = new Color(0, 0, 0, 0);
 
                     // Screen shake
-                    Camera.main.transform.parent.GetComponent<CameraShaker>().ShakeOnce(2.0f, 1f, 1f, 1.25f);
+                    Camera.main.transform.parent.GetComponent<CameraShaker>().ShakeOnce(2.4f, 1f, 1f, 1.25f);
 
                     // Juice
 
