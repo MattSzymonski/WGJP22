@@ -11,7 +11,7 @@ public class ScoringManager : MonoBehaviour
     public int NPCFragBonus = 1;
 
     public List<GameObject> scoreTextList;
-    public List<GameObject> killUIList;
+    public List<GameObject> possessUIList;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +20,7 @@ public class ScoringManager : MonoBehaviour
         {
             playerScoreList.Add(0);
             scoreTextList.Add(GameObject.Find("Player" + playerN + "Score"));
-            //killUIList.Add(GameObject.Find("Player" + playerN + "killUI"));
+            possessUIList.Add(GameObject.Find("Player" + playerN + "possessUI"));
         }
     }
 
@@ -50,6 +50,7 @@ public class ScoringManager : MonoBehaviour
         for (int i = 0; i < playerScoreList.Count; ++i)
         {
             scoreTextList[i].GetComponent<Text>().text = playerScoreList[i].ToString(); // TODO: nice juicy updating with animation etc screenshake twoja stara
+
         }
     }
 
@@ -72,6 +73,14 @@ public class ScoringManager : MonoBehaviour
     public void ResetScores()
     {
         for (int i = 0; i < playerScoreList.Count; ++i)
+        {
             playerScoreList[i] = 0;
+            SetPossessSkillFill(i, 1f);
+        }
+    }
+
+    public void SetPossessSkillFill(int playerIndex, float fill)
+    {
+        possessUIList[playerIndex].GetComponent<RectTransform>().transform.localScale = new Vector3(fill, fill, fill); 
     }
 }

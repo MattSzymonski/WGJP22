@@ -26,7 +26,9 @@ public class MainGameManager : MightyGameManager
     [ReadOnly] public List<bool> cursorMovedList = new List<bool>();
     [ReadOnly] public List<bool> cursorStartedMovingList = new List<bool>();
     private List<MightyTimer> cursorDelayTimerList = new List<MightyTimer>();
-    //private List<MightyTimer> triggerTimerList = new List<MightyTimer>();
+    private List<MightyTimer> posessionTimerList = new List<MightyTimer>();
+
+    public float possessionSkillCooldown = 5f;
     private ScoringManager scoringManager;
 
     [ReadOnly]
@@ -44,8 +46,9 @@ public class MainGameManager : MightyGameManager
         for (int i = 0; i < playerCount; i++)
         {
             cursorDelayTimerList.Add(Utils.InitializeTimer("CursorDelayTimer" + i, 0.05f, 0.05f));
-            //triggerTimerList.Add(Utils.InitializeTimer("TriggerTimerList" + i, 0.2f, 0.2f));
+            posessionTimerList.Add(Utils.InitializeTimer("PossessionDelayTimer" + i, possessionSkillCooldown, possessionSkillCooldown));
         }
+        scoringManager.ResetScores();
     }
 
     void Update()
@@ -54,6 +57,7 @@ public class MainGameManager : MightyGameManager
         if (gameOver)
             return;
         HandlePlayers();
+        UpdateUI();
     }
 
     void HandlePlayers()
@@ -194,14 +198,18 @@ public class MainGameManager : MightyGameManager
         {
             int controllerNr = i + 1;
             //if (Input.GetAxis("Controller" + controllerNr + " Triggers") != 0 && triggerTimerList[i].finished) // TODO: TRIGGERS NOT WORKING
-            if (Input.GetButtonDown("Controller" + controllerNr + " X")) // InputManager "Positive Button" must be "joystick <nr> button <button nr>"
+            if (Input.GetButtonDown("Controller" + controllerNr + " X") && posessionTimerList[i].finished) // InputManager "Positive Button" must be "joystick <nr> button <button nr>"
             {
                 Debug.Log("Controller " + controllerNr + " Poof");
+
                 if (!playerShootSelectionList[i])
                 {
                     Debug.Log("Missing selection"); // TODO: corner case? ignore?
                     return;
                 }
+
+                Utils.ResetTimer(posessionTimerList[i]);
+
                 bool killedSomething = false;
                 int playerKillingID = i + 1;
                 // FOR EACH PLAYER: check if removing a player from the list
@@ -265,6 +273,14 @@ public class MainGameManager : MightyGameManager
 
             if (brain.currentGameStateName == "Pause")
                 brain.TransitToNextGameState("Playing");
+        }
+    }
+
+    void UpdateUI()
+    {
+        for (int i = 0; i < cursorDelayTimerList.Count; ++i) // TODO: add cursor movement delay
+        {
+            scoringManager.SetPossessSkillFill(i, Mathf.Clamp(posessionTimerList[i].currentTime / posessionTimerList[i].targetTime, 0f, 1f));
         }
     }
 
