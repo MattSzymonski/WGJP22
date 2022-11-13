@@ -41,6 +41,8 @@ public class MainGameManager : MightyGameManager
     public bool gameOver = false;
     public bool initialized = false;
 
+    private Vector3 previousMovementDirection;
+
     void Start()
     {
         brain = MightyGameBrain.Instance;
@@ -100,6 +102,7 @@ public class MainGameManager : MightyGameManager
 
             if (useGamePadInput)
             {
+                /*
                 Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
                 
                 Vector3 oldDirection = new Vector3(player.transform.forward.x, 0f, player.transform.forward.z);
@@ -118,6 +121,33 @@ public class MainGameManager : MightyGameManager
                 rb.velocity = new Vector3(movementDirection.x, yVel, movementDirection.z);
                 player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
                 
+                WORKING BUT NOT VERY MUCH
+                /*
+                 * Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
+
+
+                if (movementDirection == Vector3.zero)
+                {
+                    
+                    if (previousLookDirection == Vector3.zero) //for fixing Zero roation quat
+                    {
+                        transform.rotation = Quaternion.identity;
+                    }
+                    else
+                    {
+                        transform.rotation = Quaternion.LookRotation(previousLookDirection, Vector3.up);
+                    }
+                    
+                    Debug.Log("Shit");
+                }
+                else
+                {
+                    player.transform.rotation = Quaternion.LookRotation(movementDirection, Vector3.up);
+                    //previousLookDirection = lookDirection;
+                }
+
+                DebugExtension.DebugArrow(player.transform.position, movementDirection* 10, Color.yellow);
+                */
                 /* ANOTHER APPROACH
                 // go constant speed forward (TODO: move at varying speeds)
                 Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical"));
@@ -128,18 +158,7 @@ public class MainGameManager : MightyGameManager
 
                 DebugExtension.DebugArrow(player.transform.position, movementDirection.normalized * 10, Color.green);
 
-                /*if (movementDirection == Vector3.zero)
-                {
-                    if (previousMovementDireciton == Vector3.zero) //for fixing Zero roation quat
-                    {
-                        transform.rotation = Quaternion.identity;
-                    }
-                    else
-                    {
-                        transform.rotation = Quaternion.LookRotation(previousMovemen, Vector3.up);
-                    }
-                }
-                else
+                              else
                 {
                 Quaternion targetRotation = Quaternion.Euler(movementDirection);
                 player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
@@ -147,6 +166,24 @@ public class MainGameManager : MightyGameManager
                     //previousLookDirection = lookDirection;
                 //}
                 */
+
+                // new approach
+                Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
+
+                if (movementDirection == Vector3.zero)
+                {
+                    movementDirection = previousMovementDirection;
+                }
+                else
+                {
+                    previousMovementDirection = movementDirection;
+                }
+                movementDirection = Quaternion.AngleAxis(CameraAdjustementAngle, Vector3.up) * movementDirection;
+                Quaternion targetRotation = Quaternion.LookRotation(movementDirection);
+                player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+
+                //player.transform.position = Vector3.MoveTowards(player.transform.position, player.transform.forward, 100f);
+                DebugExtension.DebugArrow(player.transform.position, movementDirection* 10, Color.yellow);
             }
         }
     }
