@@ -255,6 +255,7 @@ GameObject:
   - component: {fileID: 108389514}
   - component: {fileID: 108389516}
   - component: {fileID: 108389515}
+  - component: {fileID: 108389517}
   m_Layer: 5
   m_Name: Player2Score
   m_TagString: Untagged
@@ -324,6 +325,61 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 108389513}
   m_CullTransparentMesh: 0
+--- !u!114 &108389517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 108389513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ba4adfde5ec35145bd7afb9e72e15c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progress: 0
+  animatedElement: 2
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.26313767
+      value: 0.36099786
+      inSlope: 0.019181734
+      outSlope: 0.019181734
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.407556
+    - serializedVersion: 3
+      time: 0.9958333
+      value: 0.0047169924
+      inSlope: 0.012578689
+      outSlope: 0.012578689
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.37865192
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationDirectionMultiplier: {x: 1, y: 1, z: 1}
+  evaluationSpeed: 2
+  looping: 0
+  blockIfActive: 0
+  updateStartValues: 0
+  startOnPlay: 0
+  detectCollisions: 0
+  tagsToCollide: []
 --- !u!1 &142985314
 GameObject:
   m_ObjectHideFlags: 0
@@ -3310,6 +3366,7 @@ GameObject:
   - component: {fileID: 3847232350386550555}
   - component: {fileID: 3847232350386550553}
   - component: {fileID: 3847232350386550552}
+  - component: {fileID: 3847232350386550556}
   m_Layer: 5
   m_Name: Player1Score
   m_TagString: Untagged
@@ -3337,6 +3394,61 @@ RectTransform:
   m_AnchoredPosition: {x: -800, y: 400}
   m_SizeDelta: {x: 500, y: 220}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3847232350386550556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3847232350386550554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ba4adfde5ec35145bd7afb9e72e15c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progress: 0
+  animatedElement: 2
+  animationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.26313767
+      value: 0.36099786
+      inSlope: 0.019181734
+      outSlope: 0.019181734
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.407556
+    - serializedVersion: 3
+      time: 0.9958333
+      value: 0.0047169924
+      inSlope: 0.012578689
+      outSlope: 0.012578689
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.37865192
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  animationDirectionMultiplier: {x: 1, y: 1, z: 1}
+  evaluationSpeed: 2
+  looping: 0
+  blockIfActive: 0
+  updateStartValues: 0
+  startOnPlay: 0
+  detectCollisions: 0
+  tagsToCollide: []
 --- !u!224 &3847232350429271312
 RectTransform:
   m_ObjectHideFlags: 0

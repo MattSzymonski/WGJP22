@@ -63,17 +63,22 @@ public class ScoringManager : MonoBehaviour
     public void FragNPC(int toScoreIndex)
     {
         playerScoreList[toScoreIndex - 1] += NPCFragBonus;
+        scoreTextList[toScoreIndex - 1].GetComponent<Mighty.TransformJuicer1>().StartJuicing();
     }
 
     public void FragPlayer(int toScoreIndex)//, int toDeductIndex)
     {
         playerScoreList[toScoreIndex - 1] += playerFragBonus;
         //playerScoreList[toDeductIndex] -= playerFragPenalty;
+        scoreTextList[toScoreIndex - 1].GetComponent<Mighty.TransformJuicer1>().StartJuicing();
+
     }
 
     public void Kamikaze(int kamikazeIndex)
     {
         playerScoreList[kamikazeIndex - 1] -= playerFragPenalty;
+        scoreTextList[kamikazeIndex - 1].GetComponent<Mighty.TransformJuicer1>().StartJuicing();
+
     }
 
     public void ResetScores()
