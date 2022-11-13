@@ -33,7 +33,7 @@ public class StrollingBehaviour : StateMachineBehaviour
         //Debug.Log("Entered Strolling!");
         npc = animator.GetComponent<NPC>();
         rb = animator.GetComponent<Rigidbody>();
-        //animator.transform.rotation = Quaternion.Euler(animator.transform.rotation.x, Random.Range(0, 360), animator.transform.rotation.z);
+        animator.transform.rotation = Quaternion.Euler(animator.transform.rotation.x, Random.Range(0, 360), animator.transform.rotation.z);
         if (!npc.isPosessed)
         {
             //targetDestination = animator.transform.position;
@@ -105,16 +105,16 @@ public class StrollingBehaviour : StateMachineBehaviour
         }
         else if (WallNear(animator, out outRayHit))
         {
-            // handle specifically
-            //return;
+            Vector3 reflectVec = Vector3.Reflect(animator.transform.forward, outRayHit.normal);
+            movementDirection = reflectVec;
+            previousMovementDirection = movementDirection;
         }
         movementDirection = previousMovementDirection;
-        //movementDirection = Quaternion.AngleAxis(CameraAdjustementAngle, Vector3.up) * movementDirection;
         targetRotation = Quaternion.LookRotation(movementDirection);
         animator.transform.rotation = Quaternion.RotateTowards(animator.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
 
         animator.transform.position += animator.transform.forward * Time.deltaTime * movementSpeed;
-        DebugExtension.DebugArrow(animator.transform.position, movementDirection * 100, Color.yellow);
+        DebugExtension.DebugArrow(animator.transform.position, movementDirection * 10, Color.yellow);
         currentPosition = animator.transform.position;
     }
 
