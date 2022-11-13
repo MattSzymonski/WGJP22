@@ -26,7 +26,7 @@ public class ValueStorage : MonoBehaviour
 
     public void TriggerShake()
     {
-        Camera.main.transform.parent.GetComponent<CameraShaker>().ShakeOnce(2.4f, 1f, 1f, 1.25f);
+        Camera.main.transform.parent.GetComponent<CameraShaker>().ShakeOnce(2.0f, 0.7f, 1f, 1.55f);
     }
 
 }

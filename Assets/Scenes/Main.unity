@@ -1165,15 +1165,15 @@ MonoBehaviour:
     soundType: 0
     source: {fileID: 0}
   - name: Debug_Background_Music
-    clip: {fileID: 8300000, guid: a186fc6e848313b4cac53a36eef97965, type: 3}
-    volume: 0.1
+    clip: {fileID: 8300000, guid: 20d96cb83ecc2604d857c79f1bab158b, type: 3}
+    volume: 0.05
     pitch: 1
-    playOnAwake: 0
-    loop: 0
+    playOnAwake: 1
+    loop: 1
     soundType: 1
     source: {fileID: 0}
   - name: Kill_1
-    clip: {fileID: 8300000, guid: a186fc6e848313b4cac53a36eef97965, type: 3}
+    clip: {fileID: 8300000, guid: 9acec8f62d0fe3547bbd9cd1b3f40a28, type: 3}
     volume: 0.3
     pitch: 1
     playOnAwake: 0
@@ -1181,7 +1181,7 @@ MonoBehaviour:
     soundType: 0
     source: {fileID: 0}
   - name: Kill_2
-    clip: {fileID: 8300000, guid: a186fc6e848313b4cac53a36eef97965, type: 3}
+    clip: {fileID: 8300000, guid: 0af8da3853211ff4081ad9cd016f24c9, type: 3}
     volume: 0.3
     pitch: 1
     playOnAwake: 0
@@ -1189,7 +1189,7 @@ MonoBehaviour:
     soundType: 0
     source: {fileID: 0}
   - name: Kill_3
-    clip: {fileID: 8300000, guid: a186fc6e848313b4cac53a36eef97965, type: 3}
+    clip: {fileID: 8300000, guid: 495de70edfa1753448339acc700ce7eb, type: 3}
     volume: 0.3
     pitch: 1
     playOnAwake: 0
@@ -1197,7 +1197,7 @@ MonoBehaviour:
     soundType: 0
     source: {fileID: 0}
   - name: Kill_4
-    clip: {fileID: 8300000, guid: a186fc6e848313b4cac53a36eef97965, type: 3}
+    clip: {fileID: 8300000, guid: 81ebebcf6d54eef48ab2b91dd59ab57a, type: 3}
     volume: 0.3
     pitch: 1
     playOnAwake: 0
@@ -1205,9 +1205,9 @@ MonoBehaviour:
     soundType: 0
     source: {fileID: 0}
   - name: Kill_5
-    clip: {fileID: 8300000, guid: a186fc6e848313b4cac53a36eef97965, type: 3}
+    clip: {fileID: 8300000, guid: 81ebebcf6d54eef48ab2b91dd59ab57a, type: 3}
     volume: 0.3
-    pitch: 1
+    pitch: 1.24
     playOnAwake: 0
     loop: 0
     soundType: 0
@@ -3840,7 +3840,7 @@ MonoBehaviour:
   eventSystem: {fileID: 3847232350688877414}
   disableButtonSounds: 0
   displayGameJamLogo: 0
-  enableResolutionChanging: 1
+  enableResolutionChanging: 0
   resolutionDropdown: {fileID: 0}
   gameJamLogoObject: {fileID: 3847232349815500580}
   gameJamLogoSprite: {fileID: 0}
