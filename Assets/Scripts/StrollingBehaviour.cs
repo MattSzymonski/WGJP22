@@ -15,8 +15,10 @@ public class StrollingBehaviour : StateMachineBehaviour
 
     public int directionChangeTimeMin = 1;
     public int directionChangeTimeMax = 3;
+    public int wallHitTimerCooldown = 2;
 
     private Mighty.MightyTimer directionChangeTimer;
+    private Mighty.MightyTimer wallHitTimer;
 
     //public Vector3 targetDestination;
     public Quaternion targetRotation;
@@ -38,6 +40,7 @@ public class StrollingBehaviour : StateMachineBehaviour
         {
             //targetDestination = animator.transform.position;
             Utils.ResetTimer(out directionChangeTimer, "StrollingStateTimer", directionChangeTimeMin, directionChangeTimeMax);
+            Utils.ResetTimer(out wallHitTimer, "WallHitTimer", wallHitTimerCooldown, wallHitTimerCooldown);
         }
     }
 
@@ -103,11 +106,12 @@ public class StrollingBehaviour : StateMachineBehaviour
             movementDirection = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
             previousMovementDirection = movementDirection;
         }
-        else if (WallNear(animator, out outRayHit))
+        else if (WallNear(animator, out outRayHit) && wallHitTimer.finished)
         {
             //Vector3 reflectVec = Vector3.Reflect(animator.transform.forward, outRayHit.normal);
             //movementDirection = reflectVec;
-
+            Mighty.MightyTimersManager.Instance.RemoveTimer(wallHitTimer);
+            Utils.ResetTimer(out wallHitTimer, "WallHitTimer", wallHitTimerCooldown, wallHitTimerCooldown);
 
             movementDirection = -movementDirection;
 
