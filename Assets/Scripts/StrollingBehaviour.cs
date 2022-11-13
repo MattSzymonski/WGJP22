@@ -13,15 +13,17 @@ public class StrollingBehaviour : StateMachineBehaviour
 
     public float positionDampTime = 0.12f;
 
-    public int directionChangeTimeMin = 30;
-    public int directionChangeTimeMax = 100;
+    public int directionChangeTimeMin = 1;
+    public int directionChangeTimeMax = 3;
 
     private Mighty.MightyTimer directionChangeTimer;
 
-    public Vector3 targetDestination;
+    //public Vector3 targetDestination;
     public Quaternion targetRotation;
 
     private Vector3 positionVelocity = Vector3.zero;
+    public Vector3 previousMovementDirection = Vector3.zero;
+    public Vector3 currentPosition;
     private Rigidbody rb;
 
     public NPC npc;
@@ -31,10 +33,10 @@ public class StrollingBehaviour : StateMachineBehaviour
         //Debug.Log("Entered Strolling!");
         npc = animator.GetComponent<NPC>();
         rb = animator.GetComponent<Rigidbody>();
-        animator.transform.rotation = Quaternion.Euler(animator.transform.rotation.x, Random.Range(0, 360), animator.transform.rotation.z);
+        //animator.transform.rotation = Quaternion.Euler(animator.transform.rotation.x, Random.Range(0, 360), animator.transform.rotation.z);
         if (!npc.isPosessed)
         {
-            targetDestination = animator.transform.position;
+            //targetDestination = animator.transform.position;
             Utils.ResetTimer(out directionChangeTimer, "StrollingStateTimer", directionChangeTimeMin, directionChangeTimeMax);
         }
     }
@@ -47,9 +49,9 @@ public class StrollingBehaviour : StateMachineBehaviour
 
         // new approach
         // find a new target angle several frames and smooth interpolate between them (OPTIONAL) TODO:
-        float rand;
         RaycastHit outRayHit;
 
+        /*
         if (directionChangeTimer.finished)
         {
             Mighty.MightyTimersManager.Instance.RemoveTimer(directionChangeTimer);
@@ -90,6 +92,31 @@ public class StrollingBehaviour : StateMachineBehaviour
         rb.velocity = new Vector3(movementDirection.x, yVel, movementDirection.z);
         animator.transform.rotation = Quaternion.Slerp(animator.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         DebugExtension.DebugArrow(animator.transform.position, animator.transform.forward * 3, Color.red);
+        */
+        Vector3 movementDirection = previousMovementDirection;
+
+        if (directionChangeTimer.finished)
+        {
+            Mighty.MightyTimersManager.Instance.RemoveTimer(directionChangeTimer);
+            Utils.ResetTimer(out directionChangeTimer, "StrollingStateTimer", directionChangeTimeMin, directionChangeTimeMax);
+            
+            movementDirection = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
+            previousMovementDirection = movementDirection;
+        }
+        else if (WallNear(animator, out outRayHit))
+        {
+            // handle specifically
+            //return;
+        }
+        movementDirection = previousMovementDirection;
+        //movementDirection = Quaternion.AngleAxis(CameraAdjustementAngle, Vector3.up) * movementDirection;
+        targetRotation = Quaternion.LookRotation(movementDirection);
+        animator.transform.rotation = Quaternion.RotateTowards(animator.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+
+        animator.transform.position += animator.transform.forward * Time.deltaTime * movementSpeed;
+        Debug.Log("Dupa");
+        DebugExtension.DebugArrow(animator.transform.position, movementDirection * 100, Color.yellow);
+        currentPosition = animator.transform.position;
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

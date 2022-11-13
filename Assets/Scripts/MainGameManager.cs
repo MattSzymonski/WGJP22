@@ -105,6 +105,8 @@ public class MainGameManager : MightyGameManager
             {
                 // new approach
                 Vector3 movementDirection = new Vector3(Input.GetAxis("Controller" + controllerNumber + " Left Stick Horizontal"), 0, -Input.GetAxis("Controller" + controllerNumber + " Left Stick Vertical")) * movementSpeed;
+                Debug.Log("moving player");
+                Debug.Log(movementDirection);
 
                 if (movementDirection.magnitude < 0.02f) // TODO: fix zero vector errors
                 {
@@ -119,7 +121,7 @@ public class MainGameManager : MightyGameManager
                 player.transform.rotation = Quaternion.RotateTowards(player.transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
 
                 player.transform.position += player.transform.forward * Time.deltaTime * movementSpeed;
-                DebugExtension.DebugArrow(player.transform.position, movementDirection* 10, Color.yellow);
+                DebugExtension.DebugArrow(player.transform.position, movementDirection * 10, Color.yellow);
             }
         }
     }
